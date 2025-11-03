@@ -17,22 +17,24 @@ const options = {
 };
 export const FoodMenus = () => {
   const [foodMenu, setFoodMenu] = useState([]);
+  const [addCategory, setAddCategory] = useState(false);
   const [foods, setFoods] = useState([]);
   const getData = async () => {
     const data = await fetch(`http://localhost:8000/foodCategory`, options);
     const jsondata = await data.json();
     setFoodMenu(jsondata);
-    console.log("fhdjfd", jsondata);
+    console.log("category", jsondata);
   };
   const getFood = async () => {
     const data = await fetch(`http://localhost:8000/food`, options);
     const jsondata = await data.json();
     setFoods(jsondata);
-    console.log("darara", jsondata);
+    console.log("food", jsondata);
   };
   useEffect(() => {
     getData(), getFood();
   }, []);
+
   return (
     <div className="w-full h-full flex">
       <div className="w-[1440px] flex m-auto">
@@ -65,6 +67,16 @@ export const FoodMenus = () => {
                 Dishes category
               </div>
               <div className="w-[1123px] h-[84px] gap-3 flex ">
+                <div>
+                  {foods && (
+                    <button className="w-auto rounded-2xl pl-2 gap-2 flex items-center border p-2 h-9">
+                      All dishes
+                      <div className="bg-black text-white rounded-2xl w-10 mr-1 h-5.5 justify-center items-center ">
+                        {foods.length}
+                      </div>
+                    </button>
+                  )}
+                </div>
                 {foodMenu.map((name, index) => {
                   return (
                     <MenuItem
@@ -74,8 +86,17 @@ export const FoodMenus = () => {
                     />
                   );
                 })}
-                <div>
-                  <button className="h-9 rounded-3xl bg-[#ef4444] w-9">
+                <div
+                  onClick={() => {
+                    setAddCategory(!addCategory);
+                  }}
+                >
+                  <button
+                    className="h-9 rounded-3xl bg-[#ef4444] w-9"
+                    // onClick={() => {
+                    //   setAddCategory(!addCategory);
+                    // }}
+                  >
                     {" "}
                     +{" "}
                   </button>
@@ -84,84 +105,28 @@ export const FoodMenus = () => {
             </div>
           </div>
 
-          <div className="w-[1171px] h-[582px]  overflow-y-auto bg-[#f5f5f7]">
-            <div className="w-[1171px] h-[600px] bg-white rounded-2xl mb-10">
-              <p className="ml-5 h-18  flex items-center">Appeti</p>
-              <div className="w-[1131px] flex flex-wrap gap-4 ml-5">
-                {foods.map((food, index) => {
-                  return (
-                    <Foods
-                      foodname={food.foodName}
-                      price={food.price}
-                      inform={food.ingredients}
-                      key={index}
-                    />
-                  );
-                })}
-                {/* <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl flex flex-col items-center justify-evenly">
-                  <div className="w-[238px] h-[129px] bg-amber-200"></div>
-                  <div className="w-[238px] h-[60px] bg-amber-800 flex flex-col justify-between items-center">
-                    <div className="h-5 bg-blue-300 flex justify-between w-[220px] ">
-                      <p>duprakito</p>
-                      <p>3747</p>
-                    </div>
-                    <div className="h-8 bg-gray-700">hfhfh</div>
-                  </div>
-                </div> */}
-                {/* <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div> */}
-              </div>
-            </div>
-            <div className="w-[1171px] h-[600px] bg-white rounded-2xl mb-10">
-              <p className="ml-5 h-18  flex items-center">Appetizers</p>
-              <div className="w-[1131px] flex flex-wrap gap-4 ml-5">
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-                <div className="w-[270px] h-[241px] bg-blue-500 rounded-2xl">
-                  {" "}
-                  gjdgjg
-                </div>
-              </div>
-            </div>
+          <div className="w-[1171px] h-[582px]  overflow-y-auto bg-[#f5f5f7] ">
+            {foodMenu.map((food, index) => {
+              return (
+                <Foods
+                  FoodcategoryName={food.categoryName}
+                  // foodname={food.foodName}
+                  // inform={food.ingredients}
+                  // price={food.price}
+                  key={index}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
+      {addCategory && (
+        <div className="flex absolute  bg-black/30 w-full h-full justify-center">
+          <div className="w-[460px] h-[272px] bg-white mt-80">
+            <div className="w-[412px] h-[52px]"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

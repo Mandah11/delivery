@@ -5,7 +5,7 @@ import { MenuLogo } from "../icon/foodmenulogo.js";
 import { OrderLogo } from "../icon/orderfoodlogo";
 import { useState, useEffect } from "react";
 import { MenuItem } from "../component/MenuItem";
-import { Foods } from "../component/Foods";
+import { Product } from "../component/ProductItem";
 
 const options = {
   method: "GET",
@@ -108,11 +108,9 @@ export const FoodMenus = () => {
           <div className="w-[1171px] h-[582px]  overflow-y-auto bg-[#f5f5f7] ">
             {foodMenu.map((food, index) => {
               return (
-                <Foods
+                <Product
                   FoodcategoryName={food.categoryName}
-                  // foodname={food.foodName}
-                  // inform={food.ingredients}
-                  // price={food.price}
+                  id={food._id}
                   key={index}
                 />
               );

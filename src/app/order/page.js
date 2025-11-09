@@ -10,36 +10,38 @@ import { RightIcon } from "../admin/icon/righticon";
 export default function Home() {
   return (
     <div className="w-full h-full flex">
-      <div className="w-full flex justify-evenly">
-        <div className="w-[20%]  flex flex-col items-end">
-          <div className="w-[70%]  h-28  mt-9 px-5 flex items-center text-[15px] gap-2">
+      <div className="w-full flex justify-between">
+        <div className="w-[15%]  flex flex-col items-center">
+          <div className="w-[80%]  h-28  mt-7 px-5 flex items-center text-[15px]">
             <FoodLogo />
-            <div>
+            <div className="flex flex-col items-center">
               <div className="text-[22px] font-medium">NomNom</div>
-              <div className="text-[18px]">Swift delivery</div>
+              <div className="text-[18px] ml-3 text-[#808081]">
+                Swift delivery
+              </div>
             </div>
           </div>
-          <div className="w-[70%] h-[120px]   mt-8  flex flex-col pl-6">
+          <div className="w-[80%] h-[120px]   mt-8  flex flex-col pl-6">
             <Link href={"/admin"}>
-              <button className="w-[80%] h-10  rounded-2xl   flex justify-center items-center text-[16px] gap-3">
+              <button className="w-[90%] h-10  rounded-2xl   flex justify-center items-center text-[16px] gap-3">
                 <FoodBlackLogo />
                 Food Menu
               </button>
             </Link>
-            <button className="w-[80%] h-12 rounded-2xl bg-black text-white flex items-center justify-center text-[16px] gap-3 mt-6 ">
+            <button className="w-[90%] h-12 rounded-2xl bg-black text-white flex items-center justify-center text-[16px] gap-3 mt-6 ">
               <OrderWhiteLogo />
               Order
             </button>
           </div>
         </div>
 
-        <div className="w-[70%] bg-[#f5f5f7] flex items-center justify-center">
-          <div className="w-[1171px] h-[948px] flex flex-col py-3">
-            <div className="h-[60px] w-full  justify-end flex mt-11">
+        <div className="w-[90%] bg-[#f5f5f7] h-screen flex  justify-center ">
+          <div className="w-[95%] min-h-[948px] flex flex-col  ">
+            <div className="h-[60px] w-full  justify-end flex mt-5">
               <button className="w-9 h-9 bg-black rounded-3xl"></button>
             </div>
-            <div className="w-[1171px] bg-white border border-gray-200 rounded-md h-fit ">
-              <div className="h-[76px] w-full flex   items-center justify-between">
+            <div className="w-full  border border-gray-200 rounded-md h-fit ">
+              <div className="h-[76px] w-full flex bg-white  items-center justify-between">
                 <div className="w-[485px] h-11  ml-4">
                   <div>Order</div>
                   <div>32 items</div>
@@ -61,8 +63,8 @@ export default function Home() {
               </div>
               <div className="flex flex-col">
                 {" "}
-                <div className="w-[1171px] h-13  flex border border-gray-200">
-                  <div className="w-12 h-full flex justify-center items-center">
+                <div className="w-full  h-13  flex border border-gray-200">
+                  <div className="w-12 h-full bg- flex justify-center items-center">
                     <input type="checkbox"></input>
                   </div>
                   <div className="w-14 h-full flex justify-center items-center">
@@ -87,7 +89,7 @@ export default function Home() {
                     Delivery state
                   </div>
                 </div>
-                <div className="w-[1171px] h-13  flex border border-gray-200">
+                <div className="w-full h-13  flex border border-gray-200">
                   <div className="w-12 h-full flex justify-center items-center">
                     <input type="checkbox"></input>
                   </div>

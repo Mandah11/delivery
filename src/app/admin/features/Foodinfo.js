@@ -17,10 +17,32 @@ const options = {
 };
 export const FoodMenus = () => {
   const [foodMenu, setFoodMenu] = useState([]);
-  const [addCategory, setAddCategory] = useState(null);
   const [foods, setFoods] = useState([]);
-  const handleRemove = () => {
-    setAddCategory(null);
+  const [addfoodcategory, setAddFoodCategory] = useState("");
+  const [successmes, setSuccessMes] = useState("");
+  const [addCategory, setAddCategory] = useState(false);
+  const handleAddCategoryChange = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/foodCategory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          categoryName: addfoodcategory,
+        }),
+      });
+      await getData();
+      await getFood();
+      setAddFoodCategory("");
+      setAddCategory(false);
+      setSuccessMes("New Category is being added to the menu");
+
+      setTimeout(() => setSuccessMes(""), 3000);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const getData = async () => {
     const data = await fetch(`http://localhost:8000/foodCategory`, options);
@@ -36,26 +58,30 @@ export const FoodMenus = () => {
   };
 
   useEffect(() => {
-    getData(), getFood();
+    getData();
+    getFood();
   }, []);
+
   return (
     <div className="w-full h-screen flex">
-      <div className="flex  w-full justify-evenly ">
-        <div className="w-[20%]  flex flex-col items-end ">
-          <div className="w-[70%]  h-28  mt-9 px-5 flex items-center text-[15px] gap-2">
+      <div className="flex  w-full justify-between  ">
+        <div className="w-[15%]  flex flex-col items-center  ">
+          <div className="  w-[80%] h-28  mt-7 px-5 flex items-center text-[15px]">
             <FoodLogo />
-            <div>
+            <div className=" flex flex-col items-center">
               <div className="text-[22px] font-medium">NomNom</div>
-              <div className="text-[18px]">Swift delivery</div>
+              <div className="text-[18px] ml-3 text-[#808081]">
+                Swift delivery
+              </div>
             </div>
           </div>
-          <div className="w-[70%] h-[120px]   mt-8  flex flex-col pl-6">
-            <button className="w-[80%] h-12 bg-black rounded-2xl text-white  flex justify-center items-center text-[16px] gap-3">
+          <div className="w-[80%] h-[120px]   mt-8  flex flex-col pl-6">
+            <button className="w-[90%] h-12 bg-black rounded-2xl text-white  flex justify-center items-center text-[16px] gap-3">
               <MenuLogo />
               Food Menu
             </button>
             <Link href={"/order"}>
-              <button className="w-full h-10 rounded-2xl  flex ml-14 items-center text-[16px] gap-3 mt-6 ">
+              <button className="w-[90%] h-10 rounded-2xl  flex justify-center items-center text-[16px] gap-3 mt-6 ">
                 <OrderLogo />
                 Order
               </button>
@@ -63,19 +89,19 @@ export const FoodMenus = () => {
           </div>
         </div>
 
-        <div className="w-[70%] bg-[#f5f5f7]  rounded-2xl min-h-[930px] items-center justify-center flex flex-col max-h-fit">
-          <div className="w-[1171px] h-[236px] items-end flex flex-col mt-5 mb-6 ">
+        <div className="w-[90%] bg-[#f5f5f7]  rounded-2xl min-h-[930px] items-center justify-center flex flex-col max-h-fit">
+          <div className="w-[95%] h-[236px] items-end flex flex-col mt-5 mb-6 ">
             <button className=" h-9 w-9 bg-black rounded-3xl"> </button>
-            <div className="w-[1171px] h-44 mt-6 bg-white rounded-xl flex flex-col justify-evenly items-center">
-              <div className="w-[1123px] h-7 text-[25px] font-medium">
+            <div className="w-full min-h-30 h-fit bg-white  rounded-xl flex flex-col justify-between mt-5 gap-2">
+              <div className="w-[1123px] h-8   text-[25px] flex  font-medium ml-5  mt-3">
                 Dishes category
               </div>
-              <div className="w-[1123px] h-[84px] gap-3 flex ">
+              <div className="w-[full] min-h-20 h-fit items-center gap-3 flex flex-wrap ml-5 mb-3 ">
                 <div>
                   {foods && (
                     <button className="w-auto rounded-2xl pl-2 gap-2 flex items-center border p-2 h-9">
                       All dishes
-                      <div className="bg-black text-white rounded-2xl w-10 mr-1 h-5.5 justify-center items-center ">
+                      <div className="bg-black text-white rounded-2xl w-10 mr-1 h-6 justify-center items-center ">
                         {foods.length}
                       </div>
                     </button>
@@ -92,7 +118,7 @@ export const FoodMenus = () => {
                 })}
                 <div
                   onClick={() => {
-                    setAddCategory(!addCategory);
+                    setAddCategory(true);
                   }}
                 >
                   <button className="h-9 rounded-3xl bg-[#ef4444] w-9 text-white">
@@ -102,13 +128,15 @@ export const FoodMenus = () => {
               </div>
             </div>
           </div>
-          <div className="w-[1171px] h-full overflow-scroll ">
+          <div className="w-[95%]  flex flex-col items-center h-full overflow-scroll ">
             {foodMenu.map((food, index) => {
               return (
                 <Product
                   FoodcategoryName={food.categoryName}
                   id={food._id}
                   key={index}
+                  getdata={getData}
+                  getfood={getFood}
                 />
               );
             })}
@@ -125,7 +153,7 @@ export const FoodMenus = () => {
               </div>
               <button
                 className="h-9 w-9 bg-[#f5f5f7] rounded-2xl text-xl"
-                onClick={handleRemove}
+                onClick={() => setAddCategory(false)}
               >
                 x
               </button>
@@ -135,14 +163,27 @@ export const FoodMenus = () => {
               <input
                 className="h-[35px] w-full rounded-md border px-2"
                 placeholder="Type category name..."
-                type="text"
+                value={addfoodcategory}
+                onChange={(e) => {
+                  setAddFoodCategory(e.target.value);
+                }}
               />
             </div>
             <div className="w-[412px] h-16  flex justify-end items-end">
-              <button className="h-10 w-[123px] bg-black text-white  rounded-md">
+              <button
+                className="h-10 w-[123px] bg-black text-white  rounded-md"
+                onClick={handleAddCategoryChange}
+              >
                 Add Category
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {successmes && (
+        <div className="flex fixed inset-0  z-1 w-full h-[5%]  justify-center items-center mt-2">
+          <div className="bg-black rounded-md text-white h-12 flex items-center justify-center w-auto px-3 ">
+            {successmes}
           </div>
         </div>
       )}

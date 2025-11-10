@@ -12,6 +12,8 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
+const uploadpreset = "delivery";
+const userid = "delivery";
 export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
   const [foodsType, setFoodsType] = useState([]);
   const [addfood, setAddFood] = useState({
@@ -54,7 +56,7 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
     );
     const jsondata = await data.json();
     setFoodsType(jsondata);
-    console.log("food", jsondata);
+    console.log("foodcategory", jsondata);
   };
 
   useEffect(() => {

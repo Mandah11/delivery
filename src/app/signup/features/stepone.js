@@ -3,13 +3,20 @@
 import { LeftIcon } from "@/app/admin/icon/lefticon";
 import Link from "next/link";
 import { useState } from "react";
-const checkinputHasSpecial = (string) => {
-  return /[!#$%^&*(),?":{}<>]/.test(string);
-};
-const check = (string) => {
-  return /[@]/.test(string);
-};
 export const Stepone = ({ handleNextStep, handleStart }) => {
+  const [email, setEmail] = useState("");
+  const [errorstate, setErrorState] = useState("");
+
+  const handleButtonClick = () => {
+    if (email === "") {
+      setErrorState("email is required");
+    } else if (!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+      setErrorState("example@gmail.com");
+    } else {
+      handleNextStep();
+    }
+  };
+
   return (
     <div className=" w-screen h-screen  flex justify-end  py-5 ">
       <div className="w-[93%]  h-full flex justify-between items-center">
@@ -31,20 +38,36 @@ export const Stepone = ({ handleNextStep, handleStart }) => {
                 Sign up to explore your favorite dishes.
               </p>
             </div>
-            <div className="h-10  w-[70%]   flex flex-col justify-center  ">
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email address"
-                className="w-full border h-9 rounded-md px-2"
-              />
+            <div>
+              <div className="h-10  w-[70%]   flex flex-col justify-center  ">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email address"
+                  className={
+                    errorstate
+                      ? "w-full border h-9 rounded-md px-2 border-red-500 text-red-500"
+                      : "w-full border h-9 rounded-md px-2"
+                  }
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />{" "}
+              </div>
+              {errorstate && (
+                <div className="ml-1 text-[15px] text-red-500">
+                  {errorstate}
+                </div>
+              )}
             </div>
+
             <button
-              className="h-9 w-[70%] bg-gray-300 text-white flex justify-center items-center"
-              onClick={handleNextStep}
+              className="h-9 w-[70%] text-white flex justify-center items-center"
+              style={{ background: email.length < "3" ? "#6b6b6b" : "black" }}
+              onClick={handleButtonClick}
             >
               Let's go
             </button>
+
             <div className="flex justify-center gap-4 text-[#6d6d6d] w-[70%]">
               <p>Already have an account?</p>
               <Link href={"/login"}>

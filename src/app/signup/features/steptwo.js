@@ -2,30 +2,39 @@
 import Link from "next/link";
 import { LeftIcon } from "../../admin/icon/lefticon";
 import { useState } from "react";
-const checkHasSpecial = (string) => {
-  return /[!%^*(),.?":{}<>]/.test(string);
-};
-export const Steptwo = ({ handleNextStep, handleBackStep }) => {
-  const [data, setData] = useState({
-    password: "",
-    confirmpassword: "",
-  });
-  const [errorstatepassword, setErrorStatePassword] = useState("");
-  const [errorstateconfirm, setErrorStateConfirm] = useState("");
-  const handleButtonClick = () => {
-    if (data.password === "") {
-      setErrorStatePassword("password is required");
-    } else if (!checkHasSpecial(data.password)) {
-      setErrorStatePassword("Weak password. Use numbers and symbols.");
-    }
-    if (data.confirmpassword === "") {
-      setErrorStateConfirm("confirmpassword is required");
-    } else if (data.confirmpassword !== data.password) {
-      setErrorStateConfirm("Those password didn't match. Try again");
-    } else {
-      handleNextStep();
-    }
-  };
+// const checkHasSpecial = (string) => {
+//   return /[!%^*(),.?":{}<>]/.test(string);
+// };
+export const Steptwo = ({
+  handleBackStep,
+  handleButtonClick,
+  errorstatepassword,
+  errorstateconfirm,
+  valuePassword,
+  valueConfirm,
+  onchangePassword,
+  onchangeCondfirm,
+}) => {
+  // const [data, setData] = useState({
+  //   password: "",
+  //   confirmpassword: "",
+  // });
+  // const [errorstatepassword, setErrorStatePassword] = useState("");
+  // const [errorstateconfirm, setErrorStateConfirm] = useState("");
+  // const handleButtonClick = () => {
+  //   if (data.password === "") {
+  //     setErrorStatePassword("password is required");
+  //   } else if (!checkHasSpecial(data.password)) {
+  //     setErrorStatePassword("Weak password. Use numbers and symbols.");
+  //   }
+  //   if (data.confirmpassword === "") {
+  //     setErrorStateConfirm("confirmpassword is required");
+  //   } else if (data.confirmpassword !== data.password) {
+  //     setErrorStateConfirm("Those password didn't match. Try again");
+  //   } else {
+  //     handleNextStep();
+  //   }
+  // };
   return (
     <div className=" w-screen h-screen  flex justify-end  py-5 ">
       <div className="w-[93%]  h-full flex justify-between items-center">
@@ -64,10 +73,8 @@ export const Steptwo = ({ handleNextStep, handleBackStep }) => {
                       ? "w-full border h-9 rounded-md px-2 border-red-500"
                       : "w-full border h-9 rounded-md px-2"
                   }
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  value={valuePassword}
+                  onChange={onchangePassword}
                 />
                 {errorstatepassword && (
                   <div className="ml-1 text-[15px] text-red-500">
@@ -85,10 +92,8 @@ export const Steptwo = ({ handleNextStep, handleBackStep }) => {
                       ? "w-full border h-9 rounded-md px-2 border-red-500"
                       : "w-full border h-9 rounded-md px-2"
                   }
-                  value={data.confirmpassword}
-                  onChange={(e) =>
-                    setData({ ...data, confirmpassword: e.target.value })
-                  }
+                  value={valueConfirm}
+                  onChange={onchangeCondfirm}
                 />
                 {errorstateconfirm && (
                   <div className="ml-1 text-[15px] text-red-500">
@@ -109,7 +114,7 @@ export const Steptwo = ({ handleNextStep, handleBackStep }) => {
                   : "h-9 w-[70%] bg-gray-300 text-white flex justify-center items-center"
               }
               style={{
-                background: data.password.length < "3" ? "#6b6b6b" : "black",
+                background: valuePassword.length < "3" ? "#6b6b6b" : "black",
               }}
               onClick={handleButtonClick}
             >

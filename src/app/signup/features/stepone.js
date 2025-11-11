@@ -3,19 +3,25 @@
 import { LeftIcon } from "@/app/admin/icon/lefticon";
 import Link from "next/link";
 import { useState } from "react";
-export const Stepone = ({ handleNextStep, handleStart }) => {
-  const [email, setEmail] = useState("");
-  const [errorstate, setErrorState] = useState("");
+export const Stepone = ({
+  handleStart,
+  valueEmail,
+  onchangeEmail,
+  handleEmailButtonClick,
+  Email,
+}) => {
+  // const [email, setEmail] = useState("");
+  // const [errorstate, setErrorState] = useState("");
 
-  const handleButtonClick = () => {
-    if (email === "") {
-      setErrorState("email is required");
-    } else if (!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
-      setErrorState("example@gmail.com");
-    } else {
-      handleNextStep();
-    }
-  };
+  // const handleButtonClick = () => {
+  //   if (email === "") {
+  //     setErrorState("email is required");
+  //   } else if (!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+  //     setErrorState("example@gmail.com");
+  //   } else {
+  //     handleNextStep();
+  //   }
+  // };
 
   return (
     <div className=" w-screen h-screen  flex justify-end  py-5 ">
@@ -45,25 +51,25 @@ export const Stepone = ({ handleNextStep, handleStart }) => {
                   type="email"
                   placeholder="Enter your email address"
                   className={
-                    errorstate
+                    Email
                       ? "w-full border h-9 rounded-md px-2 border-red-500 text-red-500"
                       : "w-full border h-9 rounded-md px-2"
                   }
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={valueEmail}
+                  onChange={onchangeEmail}
                 />{" "}
               </div>
-              {errorstate && (
-                <div className="ml-1 text-[15px] text-red-500">
-                  {errorstate}
-                </div>
+              {Email && (
+                <div className="ml-1 text-[15px] text-red-500">{Email}</div>
               )}
             </div>
 
             <button
               className="h-9 w-[70%] text-white flex justify-center items-center"
-              style={{ background: email.length < "3" ? "#6b6b6b" : "black" }}
-              onClick={handleButtonClick}
+              style={{
+                background: valueEmail.length < "3" ? "#6b6b6b" : "black",
+              }}
+              onClick={handleEmailButtonClick}
             >
               Let's go
             </button>

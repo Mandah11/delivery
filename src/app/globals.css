@@ -5,8 +5,20 @@
 * {
   box-sizing: border-box;
 }
-@theme {
-  --breakpoint-xs: 24rem;
+
+.animation-scroll {
+  gap: 2rem;
+  display: flex;
+  white-space: nowrap;
+  animation: scroll-left 30s linear infinite;
+}
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @theme inline {

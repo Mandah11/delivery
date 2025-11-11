@@ -25,24 +25,24 @@ export const UserFood = ({ foodcategoryname, id }) => {
     getFoodTypes();
   }, []);
   return (
-    <div className="w-[90%]   flex flex-col items-center">
-      <div className="w-[96%]  h-20 flex items-center ">
+    <div className="w-full  flex flex-col items-center p-10 ">
+      <div className="w-[87%] h-20 flex items-start ">
         <p className="text-white text-3xl font-medium">{foodcategoryname}</p>
       </div>
-      <div className=" flex flex-wrap w-full ">
+      <div className=" flex w-[90%] flex-wrap  gap-25  ml-18  ">
         {foodsTypes.map((foodsinform, index) => {
           return (
             <div
-              className="w-[397px] ml-8.5 min-h-[342px] h-fit border border-gray-400 bg-white rounded-2xl flex flex-col items-center justify-evenly mb-5 mt-3"
+              className="w-[397px] min-h-[342px] h-fit  border bg-white border-gray-400 rounded-2xl flex flex-col items-center justify-evenly "
               key={index}
             >
-              <div className="w-[365px] h-[210px] rounded-xl"></div>
-              <div className="w-[365px] min-h-20 h-fit   flex flex-col justify-between items-center">
-                <div className="w-full h-8 flex justify-between">
+              <div className="w-[365px] h-[210px]"></div>
+              <div className="w-[365px] min-h-20 h-fit flex flex-col justify-between items-center">
+                <div className="h-8  flex justify-between w-full ">
                   <p>{foodsinform.foodName}</p>
                   <p>{foodsinform.price}</p>
                 </div>
-                <div className="w-full min-h-10 h-fit">
+                <div className="h-fit min-h-10 w-full">
                   {foodsinform.ingredients}
                 </div>
               </div>

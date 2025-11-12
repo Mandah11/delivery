@@ -41,7 +41,7 @@ export default function Home() {
       handleNextStep();
     }
   };
-
+  const [errorstate, setErrorState] = useState({});
   const validateInput = () => {
     const errors = {};
     if (!values.trim()) {
@@ -96,11 +96,6 @@ export default function Home() {
       return;
     } else {
       setStep(step - 1);
-    }
-  };
-  const handleEnd = () => {
-    if (step === 3) {
-      return setStep(step - 2);
     }
   };
   const handleStart = () => {

@@ -12,8 +12,9 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
-const uploadpreset = "delivery";
-const userid = "delivery";
+const UPLOAD_PRESET = "delivery";
+const CLOUD_NAME = "dgqpcqw6o";
+
 export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
   const [foodsType, setFoodsType] = useState([]);
   const [addfood, setAddFood] = useState({
@@ -56,7 +57,7 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
     );
     const jsondata = await data.json();
     setFoodsType(jsondata);
-    console.log("foodcategory", jsondata);
+    console.log("foodcategoryid", jsondata);
   };
 
   useEffect(() => {
@@ -65,11 +66,14 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
 
   return (
     <>
-      <div className=" bg-white max-h-fit mb-5 w-full rounded-2xl">
-        <p className="ml-8 h-16   flex items-center text-xl">
-          {FoodcategoryName}
-        </p>{" "}
-        <div className="w-[95%] flex flex-wrap gap-9 ml-8  pb-5 ">
+      <div className=" bg-white max-h-fit mb-5 w-full rounded-2xl flex justify-center flex-col">
+        <div className="w-full">
+          <p className="ml-8 h-16 flex items-center text-xl">
+            {FoodcategoryName}
+          </p>
+        </div>
+
+        <div className="w-[90%] flex flex-wrap  gap-10 justify-start   pb-5 bg-amber-200 ">
           <div className="w-[270px] h-[241px] border-2 border-dashed border-red-400 rounded-2xl flex flex-col items-center justify-evenly">
             <div className="flex justify-center flex-col items-center gap-4">
               <button
@@ -89,7 +93,7 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
           {foodsType.map((inform, index) => {
             return (
               <div
-                className="w-[270px] h-[241px] border border-gray-400 rounded-2xl flex flex-col items-center justify-evenly"
+                className="w-[270px] h-[241px] border border-gray-400 rounded-2xl flex flex-col items-center justify-evenly "
                 key={index}
               >
                 <div className="w-[238px] h-[129px] "></div>

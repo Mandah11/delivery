@@ -62,35 +62,34 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-col">
-                {" "}
                 <div className="w-full  h-13  flex border border-gray-200">
-                  <div className="w-12 h-full bg- flex justify-center items-center">
+                  <div className="w-[4%] h-full bg- flex justify-center items-center bg-amber-200">
                     <input type="checkbox"></input>
                   </div>
-                  <div className="w-14 h-full flex justify-center items-center">
+                  <div className="w-[5%] bg-amber-500 h-full flex justify-center items-center">
                     №
                   </div>
-                  <div className="w-[213px] h-full items-center flex justify-center">
+                  <div className="w-[11%] bg-amber-900 h-full items-center flex justify-center">
                     Customer
                   </div>
-                  <div className="w-40 h-full items-center flex  justify-center ">
+                  <div className="w-[13%] bg-amber-200 h-full items-center flex  justify-center ">
                     Food
                   </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
+                  <div className="w-[18%] bg-purple-300 h-full items-center flex  justify-center">
                     Date
                   </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
+                  <div className="w-[15%] bg-green-400 h-full items-center flex  justify-center">
                     Total
                   </div>
-                  <div className="w-[213px] h-full items-center flex justify-center">
+                  <div className="w-[20%] bg-blue-400 h-full items-center flex justify-center">
                     Delivery Address
                   </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
+                  <div className="w-[15%] bg-pink-400 h-full items-center flex  justify-center">
                     Delivery state
                   </div>
                 </div>
                 <div className="w-full h-13  flex border border-gray-200">
-                  <div className="w-12 h-full flex justify-center items-center">
+                  <div className="w-12 h-full flex justify-center items-center bg-amber-500">
                     <input type="checkbox"></input>
                   </div>
                   <div className="w-14 h-full flex justify-center items-center">
@@ -119,6 +118,36 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
+                {/* <div className="w-full h-13  flex border-0 border-gray-200">
+                  <div className="w-[4%] h-full bg- flex justify-center items-center ">
+                    <input type="checkbox"></input>
+                  </div>
+                  <div className="w-[5%]  h-full flex justify-center items-center">
+                    №
+                  </div>
+                  <div className="w-[11%]  h-full items-center flex justify-center">
+                    Customer
+                  </div>
+                  <div className="w-[13%]  h-full items-center flex  justify-end ">
+                    <div className=" flex justify-between items-center gap-2 w-25 h-8 ">
+                      2 food <DownIcon />
+                    </div>
+                  </div>
+                  <div className="w-[18%]  h-full items-center flex  justify-center">
+                    Date
+                  </div>
+                  <div className="w-[15%]  h-full items-center flex  justify-center">
+                    Total
+                  </div>
+                  <div className="w-[20%]  h-full items-center flex justify-center">
+                    Delivery Address
+                  </div>
+                  <div className="w-[15%] h-full items-center flex  justify-center">
+                    <button className="border  rounded-2xl px-2 flex gap-2 h-8 items-center">
+                      Pending <StateIcon />
+                    </button>
+                  </div>
+                </div> */}
               </div>
             </div>
 

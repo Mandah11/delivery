@@ -3,6 +3,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { Pens } from "../icon/pen";
+import { Label } from "@/components/ui/label";
+import { PhotoIcon } from "../icon/photo";
+import Image from "next/image";
 
 const options = {
   method: "GET",
@@ -16,6 +20,53 @@ const UPLOAD_PRESET = "delivery";
 const CLOUD_NAME = "dgqpcqw6o";
 
 export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
+  const [logoUrl, setLogoUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+
+        {
+          method: "POST",
+
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      return data.secure_url;
+    } catch (error) {
+      console.error("Cloudinary upload failed:", error);
+    }
+  };
+
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    setUploading(true);
+
+    try {
+      const url = await uploadToCloudinary(file);
+
+      setLogoUrl(url);
+    } catch (err) {
+      console.log("Failed to upload logo: " + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const [foodsType, setFoodsType] = useState([]);
   const [addfood, setAddFood] = useState({
     foodName: "",
@@ -24,6 +75,8 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
   });
   const [successmes, setSuccessMes] = useState("");
   const [addFoodstype, setAddFoodsType] = useState(false);
+  const [changeFoodstype, setChangeFoodsType] = useState(false);
+
   const handleAddChange = async () => {
     try {
       const res = await fetch("http://localhost:8000/food", {
@@ -37,12 +90,16 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
           price: addfood.price,
           ingredients: addfood.ingredients,
           category: id,
+          image: logoUrl,
         }),
       });
+
       getdata();
       getfood();
       setAddFood("");
+
       setAddFoodsType(false);
+
       getFoodType();
       setSuccessMes("New dish is being added to the menu");
       setTimeout(() => setSuccessMes(""), 3000);
@@ -73,7 +130,7 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
           </p>
         </div>
 
-        <div className="w-[90%] flex flex-wrap  gap-10 justify-start   pb-5 bg-amber-200 ">
+        <div className="w-[90%] flex flex-wrap  gap-10 justify-start   pb-5  ">
           <div className="w-[270px] h-[241px] border-2 border-dashed border-red-400 rounded-2xl flex flex-col items-center justify-evenly">
             <div className="flex justify-center flex-col items-center gap-4">
               <button
@@ -93,16 +150,37 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
           {foodsType.map((inform, index) => {
             return (
               <div
-                className="w-[270px] h-[241px] border border-gray-400 rounded-2xl flex flex-col items-center justify-evenly "
+                className="w-[270px] h-[241px] border border-gray-400 rounded-2xl flex flex-col items-center justify-around bg-amber-300 "
                 key={index}
               >
-                <div className="w-[238px] h-[129px] "></div>
-                <div className="w-[238px] h-[60px]  flex flex-col justify-between items-center">
-                  <div className="h-5  flex justify-between w-[220px] ">
+                <div className="relative w-[241px] h-[129px] bg-blue-300">
+                  <Image
+                    src={inform.image || "/facebook.png"}
+                    width={100}
+                    height={100}
+                    alt="image failed"
+                    className="w-full h-full object-cover rounded-lg"
+                    style={{ width: "92%", height: "130px" }}
+                  />
+
+                  <div className="absolute top-2 right-2 ">
+                    <button
+                      className="h-9 w-9 rounded-full flex justify-center items-center bg-white cursor-pointer text-red-500 shadow-md"
+                      onClick={() => setChangeFoodsType(true)}
+                    >
+                      <Pens />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-[238px] h-[35%]  flex flex-col justify-around items-center">
+                  <div className="h-6  flex justify-between w-[220px]  ">
                     <p>{inform.foodName}</p>
                     <p>{inform.price}</p>
                   </div>
-                  <div className="h-8">{inform.ingredients}</div>
+                  <div className="h-12 w-[220px] text-md overflow-scroll ">
+                    <p>{inform.ingredients}</p>
+                  </div>
                 </div>
               </div>
             );
@@ -170,9 +248,44 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
                 />
               </div>
             </div>
-            <div className="w-[412px] h-42 flex flex-col justify-between">
-              <p className="h-3.5">Food image</p>
-              <div className="h-[138px] bg-[#2563eb]/10"></div>
+            <div className="w-[410px] h-47 flex flex-col  justify-around">
+              <p className="h-6">Food image</p>
+              <div className="h-[150px] bg-[#2563eb]/15">
+                {uploading && <p className="text-blue-600">Uploading...</p>}
+                {!logoUrl ? (
+                  <div>
+                    <Label htmlFor="file-input">
+                      <div className=" w-full h-35 flex items-center justify-center">
+                        <div className=" w-[80%]  flex justify-between items-center flex-col h-[40%]">
+                          <button className="w-8 h-8 rounded-2xl bg-white flex items-center justify-center">
+                            <PhotoIcon />
+                          </button>
+                          <p> Choose a file or drag & drop it here</p>
+                        </div>
+                      </div>
+                    </Label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="file-input"
+                      onChange={handleLogoUpload}
+                      disabled={uploading}
+                      className="hidden"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <div className="relative w-full h-38">
+                      <Image
+                        src={logoUrl}
+                        alt="Uploaded logo"
+                        fill
+                        className="object-contain rounded border border-gray-300 "
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="w-[412px] h-16  flex justify-end items-end">
               <button
@@ -185,6 +298,7 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
           </div>
         </div>
       )}
+
       {successmes && (
         <div className="flex fixed inset-0  z-1 w-full h-[5%]  justify-center items-center mt-2">
           <div className="bg-black rounded-md text-white h-12 flex items-center justify-center w-auto px-3">

@@ -53,8 +53,8 @@ export const UsersFood = () => {
 
   return (
     <div className="w-screen h-full flex flex-col items-center ">
-      <div className="bg-black w-screen items-center flex flex-col ">
-        <div className="h-30  justify-between flex items-center w-[90%] ">
+      <div className="h-30 bg-black justify-center flex items-center w-full fixed z-10">
+        <div className="h-30 justify-between flex items-center w-[90%]">
           <div className="flex h-18 items-center gap-3  w-[20%]">
             <FoodLogo />
             <div>
@@ -96,8 +96,8 @@ export const UsersFood = () => {
               </SheetTrigger>
               <SheetContent className="bg-[#404040] w-[600px]">
                 <SheetHeader>
-                  <SheetTitle className="text-white text-xl bg-amber-300 h-10">
-                    <div className="flex items-center gap-5">
+                  <SheetTitle className="text-white text-xl mt-4 ml-3 h-10">
+                    <div className="flex items-center gap-3">
                       <OrderWhiteIcon />
                       Order Detail
                     </div>
@@ -110,17 +110,17 @@ export const UsersFood = () => {
                         <TabsTrigger value="password">Order</TabsTrigger>
                       </TabsList>
                       <TabsContent value="account" className=" w-142">
-                        <div className="w-135 mt-5 h-180 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
+                        <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
                           <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
                             <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
                               My cart
                             </div>
-                            <div className="w-full h-[90%] overflow-scroll ">
-                              <div className="w-120  border-dashed border-b border-[#09090B80]  items-center h-45 flex gap-5 mb-5 ">
+                            <div className="w-full h-[89%]  overflow-scroll ">
+                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
                                 <div className="w-[28%]  h-35 border rounded-2xl">
                                   <img src="facebook.png"></img>
                                 </div>
-                                <div className="flex flex-col w-[71%]">
+                                <div className="flex flex-col w-[71%] h-35 ">
                                   <div className="  h-35 flex justify-between">
                                     <div className=" w-[85%]">
                                       <p className="text-[#EF4444] text-base">
@@ -131,8 +131,64 @@ export const UsersFood = () => {
                                         cream, syrup, and powdered sugar.
                                       </p>
                                     </div>
-                                    <button className="h-9 w-9 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
-                                      X
+                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
+                                      x
+                                    </button>
+                                  </div>
+                                  <div className="w-[330px] gap-3 flex">
+                                    <div className="flex gap-5">
+                                      <button>-</button>
+                                      <button>1</button>
+                                      <button>+</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
+                                <div className="w-[28%]  h-35 border rounded-2xl">
+                                  <img src="facebook.png"></img>
+                                </div>
+                                <div className="flex flex-col w-[71%] h-35 ">
+                                  <div className="  h-35 flex justify-between">
+                                    <div className=" w-[85%]">
+                                      <p className="text-[#EF4444] text-base">
+                                        Sunshine Stackers{" "}
+                                      </p>
+                                      <p className="text-xs text-black">
+                                        Fluffy pancakes stacked with fruits,
+                                        cream, syrup, and powdered sugar.
+                                      </p>
+                                    </div>
+                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
+                                      x
+                                    </button>
+                                  </div>
+                                  <div className="w-[330px] gap-3 flex">
+                                    <div className="flex gap-5">
+                                      <button>-</button>
+                                      <button>1</button>
+                                      <button>+</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
+                                <div className="w-[28%]  h-35 border rounded-2xl">
+                                  <img src="facebook.png"></img>
+                                </div>
+                                <div className="flex flex-col w-[71%] h-35 ">
+                                  <div className="  h-35 flex justify-between">
+                                    <div className=" w-[85%]">
+                                      <p className="text-[#EF4444] text-base">
+                                        Sunshine Stackers{" "}
+                                      </p>
+                                      <p className="text-xs text-black">
+                                        Fluffy pancakes stacked with fruits,
+                                        cream, syrup, and powdered sugar.
+                                      </p>
+                                    </div>
+                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
+                                      x
                                     </button>
                                   </div>
                                   <div className="w-[330px] gap-3 flex">
@@ -146,26 +202,54 @@ export const UsersFood = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="w-120 h-40">
-                            <div className="text-[#71717A] h-10 text-2xl font-semibold">
+                          <div className="w-120 h-40  flex  justify-between  flex-col">
+                            <div className="text-[#71717A] h-11 text-xl flex items-end  font-semibold ">
                               Delivery location
                             </div>
-                            <Textarea placeholder="Please share your complete address" />
-                            <p className=" text-sm text-[#EF4444]">
-                              Please complete your address
-                            </p>
+                            <div className=" h-26  flex flex-col justify-between">
+                              {address && (
+                                <Textarea
+                                  placeholder="Please share your complete address"
+                                  value={address}
+                                />
+                              )}
+
+                              <p className=" text-sm text-[#EF4444] h-8 ml-1">
+                                Please complete your address
+                              </p>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="bg-white w-135 h-60 rounded-2xl mt-10 flex justify-center">
-                          <div className="w-115">
-                            <p className="text-[#71717A] h-10 text-xl">
+                        <div className="bg-white w-135 h-64 rounded-2xl mt-10 flex justify-center items-center">
+                          <div className="h-[90%] w-121  flex flex-col justify-between">
+                            <div className="text-[#8b8b90] h-10 text-[23px] w-124 font-semibold flex mr-4  ">
                               Payment info
-                            </p>
-                            <div className="w-full border border-dashed border-[#09090B80]"></div>
-                            <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
-                              <p className="text-white font-medium">Checkout</p>
-                            </button>
+                            </div>
+                            <div className="w-120  h-58  flex justify-around flex-col mt-2 mr-3 ">
+                              <div className="h-[54%] flex flex-col justify-between ">
+                                <div className=" h-18  flex flex-col justify-between ">
+                                  <p className="h-9  flex text-[18px] items-center">
+                                    items
+                                  </p>
+                                  <p className="h-9  text-[18px] flex items-center">
+                                    Shipping
+                                  </p>
+                                </div>
+                                <div className="h-5  flex items-center">
+                                  <div className="w-full border border-dashed border-[#09090B80]"></div>
+                                </div>
+                              </div>
+
+                              <div className="h-12 mt-2 text-[18px]  ">
+                                Total
+                              </div>
+                              <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
+                                <p className="text-white font-medium">
+                                  Checkout
+                                </p>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </TabsContent>
@@ -185,6 +269,8 @@ export const UsersFood = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className=" w-full aspect-1440/570 pt-27">
         <img src="./special.png" />
       </div>
       <div className="w-full items-center justify-center bg-[#404040] flex flex-col">

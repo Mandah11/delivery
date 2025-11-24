@@ -7,6 +7,8 @@ import { Pens } from "../icon/pen";
 import { Label } from "@/components/ui/label";
 import { PhotoIcon } from "../icon/photo";
 import Image from "next/image";
+import { DeleteIcon } from "../icon/delete";
+import { FoodCard } from "./foodcard";
 
 const options = {
   method: "GET",
@@ -19,7 +21,15 @@ const options = {
 const UPLOAD_PRESET = "delivery";
 const CLOUD_NAME = "dgqpcqw6o";
 
-export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
+export const Product = ({
+  FoodcategoryName,
+  id,
+  getData,
+  getfood,
+  foodMenu,
+  foodId,
+}) => {
+  console.log("refresh");
   const [logoUrl, setLogoUrl] = useState("");
   const [uploading, setUploading] = useState(false);
 
@@ -36,7 +46,6 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
 
         {
           method: "POST",
-
           body: formData,
         }
       );
@@ -68,6 +77,21 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
   };
 
   const [foodsType, setFoodsType] = useState([]);
+  const getFoodType = async () => {
+    console.log("called");
+    const data = await fetch(
+      `http://localhost:8000/food/findId/${id}`,
+      options
+    );
+    const jsondata = await data.json();
+    setFoodsType(jsondata);
+    console.log("foodcategoryidhghhg", jsondata);
+  };
+  useEffect(() => {
+    console.log("here");
+    getFoodType();
+  }, []);
+
   const [addfood, setAddFood] = useState({
     foodName: "",
     price: "",
@@ -96,10 +120,10 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
 
       getdata();
       getfood();
-      setAddFood("");
 
       setAddFoodsType(false);
-
+      setAddFood("");
+      setLogoUrl("");
       getFoodType();
       setSuccessMes("New dish is being added to the menu");
       setTimeout(() => setSuccessMes(""), 3000);
@@ -107,34 +131,21 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
       console.log(err);
     }
   };
-  const getFoodType = async () => {
-    const data = await fetch(
-      `http://localhost:8000/food/findId/${id}`,
-      options
-    );
-    const jsondata = await data.json();
-    setFoodsType(jsondata);
-    console.log("foodcategoryid", jsondata);
-  };
-
-  useEffect(() => {
-    getFoodType();
-  }, []);
 
   return (
     <>
-      <div className=" bg-white max-h-fit mb-5 w-full rounded-2xl flex justify-center flex-col">
+      <div className=" bg-white max-h-fit mb-5 w-full rounded-2xl flex justify-center flex-col items-center">
         <div className="w-full">
-          <p className="ml-8 h-16 flex items-center text-xl">
+          <p className="ml-10 h-16 flex items-center text-2xl">
             {FoodcategoryName}
           </p>
         </div>
 
-        <div className="w-[90%] flex flex-wrap  gap-10 justify-start   pb-5  ">
-          <div className="w-[270px] h-[241px] border-2 border-dashed border-red-400 rounded-2xl flex flex-col items-center justify-evenly">
+        <div className="w-[96%] flex flex-wrap  gap-10 pb-5 ">
+          <div className="w-[397px] h-[342px] border-2 border-dashed border-red-400 rounded-2xl flex flex-col items-center justify-evenly">
             <div className="flex justify-center flex-col items-center gap-4">
               <button
-                className="h-9 rounded-3xl bg-[#ef4444] w-9 text-white"
+                className="h-12 rounded-3xl bg-[#ef4444] w-12 text-white text-[20px]"
                 onClick={() => {
                   setAddFoodsType(true);
                 }}
@@ -147,42 +158,27 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
               </div>
             </div>
           </div>
-          {foodsType.map((inform, index) => {
+          {foodsType.map((inform) => {
             return (
-              <div
-                className="w-[270px] h-[241px] border border-gray-400 rounded-2xl flex flex-col items-center justify-around bg-amber-300 "
-                key={index}
-              >
-                <div className="relative w-[241px] h-[129px] bg-blue-300">
-                  <Image
-                    src={inform.image || "/facebook.png"}
-                    width={100}
-                    height={100}
-                    alt="image failed"
-                    className="w-full h-full object-cover rounded-lg"
-                    style={{ width: "92%", height: "130px" }}
-                  />
-
-                  <div className="absolute top-2 right-2 ">
-                    <button
-                      className="h-9 w-9 rounded-full flex justify-center items-center bg-white cursor-pointer text-red-500 shadow-md"
-                      onClick={() => setChangeFoodsType(true)}
-                    >
-                      <Pens />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="w-[238px] h-[35%]  flex flex-col justify-around items-center">
-                  <div className="h-6  flex justify-between w-[220px]  ">
-                    <p>{inform.foodName}</p>
-                    <p>{inform.price}</p>
-                  </div>
-                  <div className="h-12 w-[220px] text-md overflow-scroll ">
-                    <p>{inform.ingredients}</p>
-                  </div>
-                </div>
-              </div>
+              <FoodCard
+                key={inform._id}
+                // category={inform.category}
+                ingredients={inform.ingredients}
+                price={inform.price}
+                foodName={inform.foodName}
+                foodMenu={foodMenu}
+                foodId={foodId}
+                image={inform.image || "/facebook.png"}
+                onClick={() => setChangeFoodsType(true)}
+                FoodcategoryName={FoodcategoryName}
+                logoUrl={logoUrl}
+                uploading={uploading}
+                handleLogoUpload={handleLogoUpload}
+                id={inform._id}
+                getFoodType={getFoodType}
+                getData={getData}
+                // getfood={getfood}
+              />
             );
           })}
         </div>
@@ -248,20 +244,26 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
                 />
               </div>
             </div>
-            <div className="w-[410px] h-47 flex flex-col  justify-around">
+            <div className="w-[410px] h-48 flex flex-col  justify-around">
               <p className="h-6">Food image</p>
-              <div className="h-[150px] bg-[#2563eb]/15">
-                {uploading && <p className="text-blue-600">Uploading...</p>}
+              <div className="h-[150px] bg-[#2563eb]/10 rounded-xl">
+                {uploading && (
+                  <p className="text-blue-400 w-full h-full justify-center items-center flex">
+                    Uploading...
+                  </p>
+                )}
                 {!logoUrl ? (
                   <div>
                     <Label htmlFor="file-input">
                       <div className=" w-full h-35 flex items-center justify-center">
-                        <div className=" w-[80%]  flex justify-between items-center flex-col h-[40%]">
-                          <button className="w-8 h-8 rounded-2xl bg-white flex items-center justify-center">
-                            <PhotoIcon />
-                          </button>
-                          <p> Choose a file or drag & drop it here</p>
-                        </div>
+                        {!uploading && (
+                          <div className=" w-[80%]  flex justify-between items-center flex-col h-[40%]">
+                            <button className="w-8 h-8 rounded-2xl bg-white flex items-center justify-center">
+                              <PhotoIcon />
+                            </button>
+                            <p> Choose a file or drag & drop it here</p>
+                          </div>
+                        )}
                       </div>
                     </Label>
                     <input
@@ -275,12 +277,12 @@ export const Product = ({ FoodcategoryName, id, getdata, getfood }) => {
                   </div>
                 ) : (
                   <div>
-                    <div className="relative w-full h-38">
+                    <div className="relative w-full h-38 object-cover">
                       <Image
                         src={logoUrl}
                         alt="Uploaded logo"
                         fill
-                        className="object-contain rounded border border-gray-300 "
+                        className="object-center rounded-2xl border border-gray-300"
                       />
                     </div>
                   </div>

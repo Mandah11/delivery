@@ -29,12 +29,11 @@ export const Stepone = ({
         <div className="h-[50%]  w-[40%] flex justify-center ">
           <div className="  w-[90%]  h-[60%] flex flex-col justify-between  ">
             <div>
-              <button
-                className="w-10 h-10 border flex justify-center items-center"
-                onClick={handleStart}
-              >
-                <LeftIcon />
-              </button>
+              <Link href={"/"}>
+                <button className="w-10 h-10 border flex justify-center items-center">
+                  <LeftIcon />
+                </button>
+              </Link>
             </div>
             <div className="h-18  w-full  flex flex-col justify-between ">
               <p className="h-10  text-[25px] font-medium">

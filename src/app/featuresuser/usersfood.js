@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FoodLogo } from "../admin/icon/adminfoodlogo";
 import { UserFood } from "../componentuser/userfood";
 import { Foods } from "../admin/icon/food";
@@ -20,6 +20,12 @@ import { UserIcon } from "../admin/icon/user";
 import { OrderWhiteIcon } from "../admin/icon/orderwhite";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Info, StepBack } from "lucide-react";
+import Link from "next/link";
+import { FoodList } from "../componentuser/foodListInfo";
+import { jwtDecode } from "jwt-decode";
+import { useUser } from "./userContext";
+import { useRouter } from "next/navigation";
 
 const options = {
   method: "GET",
@@ -31,8 +37,11 @@ const options = {
 };
 export const UsersFood = () => {
   const [food, setFood] = useState([]);
+  const [addfood, setAddFood] = useState([]);
   const [address, setAddress] = useState("");
   const [addloc, setAddLoc] = useState(false);
+  const [userclick, setUserClick] = useState(false);
+  const { user, setUser } = useUser();
 
   const getFoodDatas = async () => {
     const data = await fetch(`http://localhost:8000/foodCategory`, options);
@@ -50,6 +59,80 @@ export const UsersFood = () => {
     setAddLoc(false);
     setAddress("");
   };
+  const handleUser = async () => {
+    // setUserClick(!userclick);
+    setUserClick((userclick) => !userclick);
+    if (user) {
+      try {
+        const { token } = await res.json();
+        const res = await fetch("http://localhost:8000/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          headers: JSON.stringify({
+            Authorization: token,
+          }),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("tar");
+    }
+  };
+
+  const getData = async () => {
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("fooddata");
+      const jsondata = JSON.parse(data);
+      setAddFood(jsondata);
+      console.log(jsondata, "hohohooho");
+    }
+  };
+
+  const handleRemove = (id) => {
+    const removedFoods = addfood.filter((item) => item.id !== id);
+    setAddFood(removedFoods);
+
+    localStorage.setItem("fooddata", JSON.stringify(removedFoods));
+  };
+
+  // const getTokenData = async () => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(token, "jjjjjjj");
+  //   try {
+  //     const { id, email } = jwtDecode(token);
+  //     console.log(email, "id");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const router = useRouter();
+  const handleSignOut = async () => {
+    const tokens = localStorage.getItem("token");
+    if (tokens) {
+      localStorage.removeItem("token");
+      setUser(null);
+      router.push("/login");
+      console.log("push");
+    } else {
+      console.log("error");
+    }
+  };
+  const processed = useMemo(() => {
+    return addfood.map((data) => data.price * data.step);
+  }, [addfood]);
+  console.log(processed, "akakakakak");
+  const total = useMemo(() => {
+    return processed.reduce((sum, num) => sum + num, 0);
+  }, [processed]);
+  console.log(total, "totalshdee");
 
   return (
     <div className="w-screen h-full flex flex-col items-center ">
@@ -61,7 +144,7 @@ export const UsersFood = () => {
               <p className="text-white text-2xl ">
                 Nom<span className="text-red-600">Nom</span>
               </p>
-              <p className="text-white ">Swift delivery</p>
+              <p className="text-white ">Swift delivery </p>
             </div>
           </div>
 
@@ -90,196 +173,195 @@ export const UsersFood = () => {
                 </div>
               </div>
             </button>
-            <Sheet>
-              <SheetTrigger className="w-9 h-9 rounded-3xl flex bg-white items-center justify-center cursor-pointer">
-                <OrderIcon />
-              </SheetTrigger>
-              <SheetContent className="bg-[#404040] w-[600px]">
-                <SheetHeader>
-                  <SheetTitle className="text-white text-xl mt-4 ml-3 h-10">
-                    <div className="flex items-center gap-3">
-                      <OrderWhiteIcon />
-                      Order Detail
+            <div className="flex w-auto gap-2  ">
+              <Sheet>
+                <SheetTrigger className="w-10 h-10 rounded-3xl flex bg-white items-center justify-center cursor-pointer">
+                  <OrderIcon />
+                </SheetTrigger>
+                <SheetContent className="bg-[#404040] w-[600px]">
+                  <SheetHeader>
+                    <SheetTitle className="text-white text-xl mt-4 ml-3 h-10">
+                      <div className="flex items-center gap-3">
+                        <OrderWhiteIcon />
+                        Order Detail
+                      </div>
+                    </SheetTitle>
+                    <SheetDescription>
+                      <Tabs defaultValue="account" className="w-[400px]">
+                        <TabsList>
+                          <TabsTrigger value="account">Card</TabsTrigger>
+                          <TabsTrigger value="password">Order</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="account" className=" w-142">
+                          {(!addfood.length == 0 && (
+                            <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
+                              <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
+                                <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
+                                  My cart
+                                </div>
+
+                                <div className="w-full h-[89%]  overflow-scroll ">
+                                  {addfood.map((data, index) => {
+                                    return (
+                                      <FoodList
+                                        key={index}
+                                        src={data.src}
+                                        foodName={data.foodName}
+                                        ingredients={data.ingredients}
+                                        step={data.step}
+                                        id={data.id}
+                                        handleRemove={handleRemove}
+                                        price={data.price}
+                                        setAddFood={setAddFood}
+                                        addfood={addfood}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                              <div className="w-120 h-40 flex  justify-between  flex-col">
+                                <div className="text-[#71717A] h-11 text-xl flex items-end  font-semibold ">
+                                  Delivery location
+                                </div>
+                                <div className=" h-26  flex flex-col justify-between">
+                                  {address ? (
+                                    <Textarea
+                                      placeholder="Please share your complete address"
+                                      value={address}
+                                      onChange={(e) => {
+                                        setAddress(e.target.value);
+                                      }}
+                                    />
+                                  ) : (
+                                    <Textarea
+                                      placeholder="Please share your complete address"
+                                      value={address}
+                                      onChange={(e) => {
+                                        setAddress(e.target.value);
+                                      }}
+                                    />
+                                  )}
+
+                                  <p className=" text-sm text-[#EF4444] h-8 ml-1">
+                                    Please complete your address
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )) || (
+                            <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl  bg-white">
+                              <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
+                                <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
+                                  My cart
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="bg-white w-135 h-64 rounded-2xl mt-10 flex justify-center items-center">
+                            <div className="h-[90%] w-121  flex flex-col justify-between">
+                              <div className="text-[#8b8b90] h-10 text-[23px] w-124 font-semibold flex mr-4  ">
+                                Payment info
+                              </div>
+                              <div className="w-120  h-58  flex justify-around flex-col mt-1.5 mr-3 ">
+                                <div className="h-[54%] flex flex-col justify-between ">
+                                  <div className=" h-18  flex flex-col justify-between ">
+                                    <div className="h-9  flex text-[18px] items-center justify-between">
+                                      <p>Items</p>
+                                      <p className="text-xl font-bold text-black">
+                                        {total}
+                                      </p>
+                                    </div>
+
+                                    <div className="h-9  text-[18px] flex items-center justify-between">
+                                      <p>Shipping</p>
+                                      <p className="text-xl font-bold text-black">
+                                        99
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="h-5  flex items-center">
+                                    <div className="w-full border border-dashed border-[#09090B80]"></div>
+                                  </div>
+                                </div>
+                                <div className="h-12 text-[18px]  flex justify-between">
+                                  <div className=" h-10 flex items-center text-[18px]">
+                                    Total
+                                  </div>
+                                  <p className="h-10 flex items-center  text-xl font-bold text-black">
+                                    {total + 99}
+                                  </p>
+                                </div>
+
+                                <button className="w-full h-10 bg-[#EF4444] mt-1 cursor-pointer flex items-center justify-center rounded-2xl">
+                                  <p className="text-white font-medium">
+                                    Checkout
+                                  </p>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="password">
+                          Change your password here.
+                        </TabsContent>
+                      </Tabs>
+                    </SheetDescription>
+                  </SheetHeader>
+                </SheetContent>
+              </Sheet>
+
+              <div>
+                <button
+                  className="h-10 w-10 bg-red-500 rounded-3xl flex items-center justify-center"
+                  onClick={handleUser}
+                >
+                  <UserIcon />
+                </button>
+              </div>
+              {userclick &&
+                (user?.email ? (
+                  <div className="w-[188px] h-[104px] bg-white flex flex-col justify-evenly items-center rounded-xl fixed mt-12 right-6 ">
+                    <div className="h-8 w-[156px] justify-center overflow-scroll  flex items-center text-[19px]">
+                      <p className=" w-auto">{user?.email}</p>
                     </div>
-                  </SheetTitle>
-                  <SheetDescription>
-                    <Tabs defaultValue="account" className="w-[400px]">
-                      <TabsList>
-                        <TabsTrigger value="account">Card</TabsTrigger>
 
-                        <TabsTrigger value="password">Order</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="account" className=" w-142">
-                        <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
-                          <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
-                            <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
-                              My cart
-                            </div>
-                            <div className="w-full h-[89%]  overflow-scroll ">
-                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
-                                <div className="w-[28%]  h-35 border rounded-2xl">
-                                  <img src="facebook.png"></img>
-                                </div>
-                                <div className="flex flex-col w-[71%] h-35 ">
-                                  <div className="  h-35 flex justify-between">
-                                    <div className=" w-[85%]">
-                                      <p className="text-[#EF4444] text-base">
-                                        Sunshine Stackers{" "}
-                                      </p>
-                                      <p className="text-xs text-black">
-                                        Fluffy pancakes stacked with fruits,
-                                        cream, syrup, and powdered sugar.
-                                      </p>
-                                    </div>
-                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
-                                      x
-                                    </button>
-                                  </div>
-                                  <div className="w-[330px] gap-3 flex">
-                                    <div className="flex gap-5">
-                                      <button>-</button>
-                                      <button>1</button>
-                                      <button>+</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
-                                <div className="w-[28%]  h-35 border rounded-2xl">
-                                  <img src="facebook.png"></img>
-                                </div>
-                                <div className="flex flex-col w-[71%] h-35 ">
-                                  <div className="  h-35 flex justify-between">
-                                    <div className=" w-[85%]">
-                                      <p className="text-[#EF4444] text-base">
-                                        Sunshine Stackers{" "}
-                                      </p>
-                                      <p className="text-xs text-black">
-                                        Fluffy pancakes stacked with fruits,
-                                        cream, syrup, and powdered sugar.
-                                      </p>
-                                    </div>
-                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
-                                      x
-                                    </button>
-                                  </div>
-                                  <div className="w-[330px] gap-3 flex">
-                                    <div className="flex gap-5">
-                                      <button>-</button>
-                                      <button>1</button>
-                                      <button>+</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="w-120  border-dashed border-b border-[#09090B80]   h-43 flex gap-5 mb-5 ">
-                                <div className="w-[28%]  h-35 border rounded-2xl">
-                                  <img src="facebook.png"></img>
-                                </div>
-                                <div className="flex flex-col w-[71%] h-35 ">
-                                  <div className="  h-35 flex justify-between">
-                                    <div className=" w-[85%]">
-                                      <p className="text-[#EF4444] text-base">
-                                        Sunshine Stackers{" "}
-                                      </p>
-                                      <p className="text-xs text-black">
-                                        Fluffy pancakes stacked with fruits,
-                                        cream, syrup, and powdered sugar.
-                                      </p>
-                                    </div>
-                                    <button className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500">
-                                      x
-                                    </button>
-                                  </div>
-                                  <div className="w-[330px] gap-3 flex">
-                                    <div className="flex gap-5">
-                                      <button>-</button>
-                                      <button>1</button>
-                                      <button>+</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="w-120 h-40  flex  justify-between  flex-col">
-                            <div className="text-[#71717A] h-11 text-xl flex items-end  font-semibold ">
-                              Delivery location
-                            </div>
-                            <div className=" h-26  flex flex-col justify-between">
-                              {address && (
-                                <Textarea
-                                  placeholder="Please share your complete address"
-                                  value={address}
-                                />
-                              )}
-
-                              <p className=" text-sm text-[#EF4444] h-8 ml-1">
-                                Please complete your address
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="bg-white w-135 h-64 rounded-2xl mt-10 flex justify-center items-center">
-                          <div className="h-[90%] w-121  flex flex-col justify-between">
-                            <div className="text-[#8b8b90] h-10 text-[23px] w-124 font-semibold flex mr-4  ">
-                              Payment info
-                            </div>
-                            <div className="w-120  h-58  flex justify-around flex-col mt-2 mr-3 ">
-                              <div className="h-[54%] flex flex-col justify-between ">
-                                <div className=" h-18  flex flex-col justify-between ">
-                                  <p className="h-9  flex text-[18px] items-center">
-                                    items
-                                  </p>
-                                  <p className="h-9  text-[18px] flex items-center">
-                                    Shipping
-                                  </p>
-                                </div>
-                                <div className="h-5  flex items-center">
-                                  <div className="w-full border border-dashed border-[#09090B80]"></div>
-                                </div>
-                              </div>
-
-                              <div className="h-12 mt-2 text-[18px]  ">
-                                Total
-                              </div>
-                              <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
-                                <p className="text-white font-medium">
-                                  Checkout
-                                </p>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </TabsContent>
-                      <TabsContent value="password">
-                        Change your password here.
-                      </TabsContent>
-                    </Tabs>
-                  </SheetDescription>
-                </SheetHeader>
-              </SheetContent>
-            </Sheet>
-
-            <div>
-              <button className="h-10 w-10 bg-red-500 rounded-3xl flex items-center justify-center">
-                <UserIcon />
-              </button>
+                    <div className="h-9 w-[156px] flex justify-center">
+                      <button
+                        className="h-full w-auto py-2 px-2 bg-[#dbdbde] rounded-xl flex items-center"
+                        onClick={handleSignOut}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-[185px] h-[41px] bg-white flex justify-evenly items-center rounded-xl fixed mt-13 right-2 ">
+                    {" "}
+                    <Link href={"/login"}>
+                      <p className="cursor-pointer">Log In</p>{" "}
+                    </Link>{" "}
+                    <Link href={"/signup"}>
+                      <p className="cursor-pointer">Sing Up</p>{" "}
+                    </Link>{" "}
+                  </div>
+                ))}
             </div>
           </div>
         </div>
       </div>
+
       <div className=" w-full aspect-1440/570 pt-27">
         <img src="./special.png" />
       </div>
       <div className="w-full items-center justify-center bg-[#404040] flex flex-col">
-        {food.map((food, index) => {
+        {food.map((food) => {
           return (
             <UserFood
               foodcategoryname={food.categoryName}
               id={food._id}
-              key={index}
+              key={food._id}
+              getData={getData}
             />
           );
         })}
@@ -390,7 +472,7 @@ export const UsersFood = () => {
         </div>
       </div>
       {addloc && (
-        <div className="flex absolute  bg-black/30 w-full h-full justify-center items-center">
+        <div className="flex w-screen h-screen bg-black/30 fixed  justify-center items-center">
           <div className="w-[460px] h-[272px] bg-white  rounded-2xl ml-10 items-center flex flex-col justify-between py-3 ">
             <div className="w-[415px]  justify-between h-[52px] flex ">
               <div className="h-7 w-[366px] ml-1 text-[19px] font-medium mt-1">

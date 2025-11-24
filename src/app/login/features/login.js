@@ -3,12 +3,14 @@ import { LeftIcon } from "../../admin/icon/lefticon";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useUser } from "@/app/featuresuser/userContext";
 
 export const Login = ({ handleEnd }) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tokenerr, setTokenErr] = useState("");
+  const { setUser } = useUser();
   const handleInputChange = async () => {
     try {
       const res = await fetch("http://localhost:8000/users/login", {
@@ -22,17 +24,18 @@ export const Login = ({ handleEnd }) => {
           password: password,
         }),
       });
-      const { token } = await res.json();
+      const { token, user } = await res.json();
       if (token) {
         localStorage.setItem("token", token);
+        setUser(user);
         router.push("/");
       } else {
-        setTokenErr("not token");
+        setTokenErr("not account");
         setTimeout(() => setTokenErr(""), 3000);
       }
     } catch (err) {
       console.log(err);
-      setTokenErr("not token");
+      setTokenErr("not account");
       setTimeout(() => setTokenErr(""), 3000);
     }
   };
@@ -43,12 +46,12 @@ export const Login = ({ handleEnd }) => {
         <div className="h-[48%] w-[40%] flex justify-center ">
           <div className="  w-[90%]  h-[73%] flex flex-col justify-between  ">
             <div>
-              <button
-                className="w-10 h-10 border flex justify-center items-center"
-                onClick={handleEnd}
-              >
-                <LeftIcon />
-              </button>
+              <Link href={"/"}>
+                {" "}
+                <button className="w-10 h-10 border flex justify-center items-center">
+                  <LeftIcon />
+                </button>
+              </Link>
             </div>
             <div className="h-18  w-full  flex flex-col justify-between ">
               <p className="h-10  text-[25px] font-medium">Log in</p>

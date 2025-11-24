@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Stepone } from "./features/stepone";
 import { Steptwo } from "./features/steptwo";
 import { useRouter } from "next/navigation";
+import { useUser } from "../featuresuser/userContext";
 
 const options = {
   method: "GET",
@@ -54,7 +55,7 @@ export default function Home() {
     confirmpassword: "",
   });
   const [errorstate, setErrorState] = useState({});
-
+  const { setUser } = useUser();
   const handleAddChange = async () => {
     try {
       const res = await fetch("http://localhost:8000/users", {
@@ -71,8 +72,29 @@ export default function Home() {
       const errors = validateInput();
       if (Object.keys(errors).length === 0) {
         setErrorState({});
+        try {
+          const res = await fetch("http://localhost:8000/users/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              password: data.password,
+            }),
+          });
+          const { token, user } = await res.json();
+          if (token) {
+            localStorage.setItem("token", token);
+            setUser(user);
+          } else {
+            console.log("aronooo");
+          }
+        } catch (err) {
+          console.log("error copylogin");
+        }
         router.push("/");
-        console.log("arano");
       } else {
         setErrorState(errors);
         console.log("errrooor");

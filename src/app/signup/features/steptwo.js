@@ -2,9 +2,6 @@
 import Link from "next/link";
 import { LeftIcon } from "../../admin/icon/lefticon";
 import { useState } from "react";
-// const checkHasSpecial = (string) => {
-//   return /[!%^*(),.?":{}<>]/.test(string);
-// };
 export const Steptwo = ({
   handleBackStep,
   handleButtonClick,
@@ -15,26 +12,8 @@ export const Steptwo = ({
   onchangePassword,
   onchangeCondfirm,
 }) => {
-  // const [data, setData] = useState({
-  //   password: "",
-  //   confirmpassword: "",
-  // });
-  // const [errorstatepassword, setErrorStatePassword] = useState("");
-  // const [errorstateconfirm, setErrorStateConfirm] = useState("");
-  // const handleButtonClick = () => {
-  //   if (data.password === "") {
-  //     setErrorStatePassword("password is required");
-  //   } else if (!checkHasSpecial(data.password)) {
-  //     setErrorStatePassword("Weak password. Use numbers and symbols.");
-  //   }
-  //   if (data.confirmpassword === "") {
-  //     setErrorStateConfirm("confirmpassword is required");
-  //   } else if (data.confirmpassword !== data.password) {
-  //     setErrorStateConfirm("Those password didn't match. Try again");
-  //   } else {
-  //     handleNextStep();
-  //   }
-  // };
+  const [showpassword, setShowPassword] = useState(false);
+
   return (
     <div className=" w-screen h-screen  flex justify-end  py-5 ">
       <div className="w-[93%]  h-full flex justify-between items-center">
@@ -66,7 +45,7 @@ export const Steptwo = ({
               <div>
                 <input
                   id="Password"
-                  type="Password"
+                  type={showpassword ? "text" : "Password"}
                   placeholder="Password"
                   className={
                     errorstatepassword
@@ -85,8 +64,8 @@ export const Steptwo = ({
               <div>
                 <input
                   id="Confirm"
-                  type="Password"
                   placeholder="Confirm"
+                  type={showpassword ? "text" : "Password"}
                   className={
                     errorstateconfirm
                       ? "w-full border h-9 rounded-md px-2 border-red-500"
@@ -103,7 +82,11 @@ export const Steptwo = ({
               </div>
 
               <div className="flex text-[#71717A] px-2 gap-2">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={showpassword}
+                  onChange={() => setShowPassword(!showpassword)}
+                />
                 <p> Show password</p>
               </div>
             </div>

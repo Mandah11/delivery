@@ -129,14 +129,17 @@ export const FoodMenus = () => {
             </div>
           </div>
           <div className="w-[95%]  flex flex-col items-center h-full overflow-scroll ">
-            {foodMenu.map((food, index) => {
+            {foodMenu.map((food) => {
               return (
                 <Product
-                  FoodcategoryName={food.categoryName}
+                  categories={foods}
                   id={food._id}
-                  key={index}
-                  getdata={getData}
+                  key={food._id}
+                  getData={getData}
                   getfood={getFood}
+                  foodId={food._id}
+                  foodMenu={foodMenu}
+                  FoodcategoryName={food.categoryName}
                 />
               );
             })}

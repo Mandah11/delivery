@@ -8,24 +8,26 @@ import { Loc } from "../admin/icon/location";
 import { RightIcon } from "../admin/icon/righticon";
 import {
   Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
+  // SheetContent,
+  // SheetDescription,
+  // SheetHeader,
+  // SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Label } from "@/components/ui/label";
+
 import { OrderIcon } from "../admin/icon/order";
 import { UserIcon } from "../admin/icon/user";
-import { OrderWhiteIcon } from "../admin/icon/orderwhite";
+// import { OrderWhiteIcon } from "../admin/icon/orderwhite";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, StepBack } from "lucide-react";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import Link from "next/link";
 import { FoodList } from "../componentuser/foodListInfo";
 import { jwtDecode } from "jwt-decode";
 import { useUser } from "./userContext";
 import { useRouter } from "next/navigation";
+import { FoodLogoCart } from "../admin/icon/adminlogocart";
+import { OrderFood } from "../componentuser/orderFoodList";
 
 const options = {
   method: "GET",
@@ -42,6 +44,7 @@ export const UsersFood = () => {
   const [addloc, setAddLoc] = useState(false);
   const [userclick, setUserClick] = useState(false);
   const { user, setUser } = useUser();
+  console.log(user?._id, "useruseruser");
 
   const getFoodDatas = async () => {
     const data = await fetch(`http://localhost:8000/foodCategory`, options);
@@ -60,8 +63,8 @@ export const UsersFood = () => {
     setAddress("");
   };
   const handleUser = async () => {
-    // setUserClick(!userclick);
-    setUserClick((userclick) => !userclick);
+    setUserClick(!userclick);
+
     if (user) {
       try {
         const { token } = await res.json();
@@ -178,137 +181,15 @@ export const UsersFood = () => {
                 <SheetTrigger className="w-10 h-10 rounded-3xl flex bg-white items-center justify-center cursor-pointer">
                   <OrderIcon />
                 </SheetTrigger>
-                <SheetContent className="bg-[#404040] w-[600px]">
-                  <SheetHeader>
-                    <SheetTitle className="text-white text-xl mt-4 ml-3 h-10">
-                      <div className="flex items-center gap-3">
-                        <OrderWhiteIcon />
-                        Order Detail
-                      </div>
-                    </SheetTitle>
-                    <SheetDescription>
-                      <Tabs defaultValue="account" className="w-[400px]">
-                        <TabsList>
-                          <TabsTrigger value="account">Card</TabsTrigger>
-                          <TabsTrigger value="password">Order</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="account" className=" w-142">
-                          {(!addfood.length == 0 && (
-                            <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
-                              <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
-                                <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
-                                  My cart
-                                </div>
-
-                                <div className="w-full h-[89%]  overflow-scroll ">
-                                  {addfood.map((data, index) => {
-                                    return (
-                                      <FoodList
-                                        key={index}
-                                        src={data.src}
-                                        foodName={data.foodName}
-                                        ingredients={data.ingredients}
-                                        step={data.step}
-                                        id={data.id}
-                                        handleRemove={handleRemove}
-                                        price={data.price}
-                                        setAddFood={setAddFood}
-                                        addfood={addfood}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <div className="w-120 h-40 flex  justify-between  flex-col">
-                                <div className="text-[#71717A] h-11 text-xl flex items-end  font-semibold ">
-                                  Delivery location
-                                </div>
-                                <div className=" h-26  flex flex-col justify-between">
-                                  {address ? (
-                                    <Textarea
-                                      placeholder="Please share your complete address"
-                                      value={address}
-                                      onChange={(e) => {
-                                        setAddress(e.target.value);
-                                      }}
-                                    />
-                                  ) : (
-                                    <Textarea
-                                      placeholder="Please share your complete address"
-                                      value={address}
-                                      onChange={(e) => {
-                                        setAddress(e.target.value);
-                                      }}
-                                    />
-                                  )}
-
-                                  <p className=" text-sm text-[#EF4444] h-8 ml-1">
-                                    Please complete your address
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          )) || (
-                            <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl  bg-white">
-                              <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
-                                <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
-                                  My cart
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          <div className="bg-white w-135 h-64 rounded-2xl mt-10 flex justify-center items-center">
-                            <div className="h-[90%] w-121  flex flex-col justify-between">
-                              <div className="text-[#8b8b90] h-10 text-[23px] w-124 font-semibold flex mr-4  ">
-                                Payment info
-                              </div>
-                              <div className="w-120  h-58  flex justify-around flex-col mt-1.5 mr-3 ">
-                                <div className="h-[54%] flex flex-col justify-between ">
-                                  <div className=" h-18  flex flex-col justify-between ">
-                                    <div className="h-9  flex text-[18px] items-center justify-between">
-                                      <p>Items</p>
-                                      <p className="text-xl font-bold text-black">
-                                        {total}
-                                      </p>
-                                    </div>
-
-                                    <div className="h-9  text-[18px] flex items-center justify-between">
-                                      <p>Shipping</p>
-                                      <p className="text-xl font-bold text-black">
-                                        99
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="h-5  flex items-center">
-                                    <div className="w-full border border-dashed border-[#09090B80]"></div>
-                                  </div>
-                                </div>
-                                <div className="h-12 text-[18px]  flex justify-between">
-                                  <div className=" h-10 flex items-center text-[18px]">
-                                    Total
-                                  </div>
-                                  <p className="h-10 flex items-center  text-xl font-bold text-black">
-                                    {total + 99}
-                                  </p>
-                                </div>
-
-                                <button className="w-full h-10 bg-[#EF4444] mt-1 cursor-pointer flex items-center justify-center rounded-2xl">
-                                  <p className="text-white font-medium">
-                                    Checkout
-                                  </p>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </TabsContent>
-                        <TabsContent value="password">
-                          Change your password here.
-                        </TabsContent>
-                      </Tabs>
-                    </SheetDescription>
-                  </SheetHeader>
-                </SheetContent>
+                <OrderFood
+                  addfood={addfood}
+                  setAddFood={setAddFood}
+                  handleRemove={handleRemove}
+                  valueAddress={address}
+                  valueSetAddress={(e) => setAddress(e.target.value)}
+                  total={total}
+                  id={user?._id}
+                />
               </Sheet>
 
               <div>

@@ -8,29 +8,29 @@ export const OrderSelect = ({
   price,
   ingredients,
   getData,
-  id,
+  food,
 }) => {
   const [foodinfo, setFoodInfo] = useState(false);
   const [logo, setLogo] = useState(false);
   const [plus, setPlus] = useState(false);
   const [check, setCheck] = useState(false);
-  const [step, setStep] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const handleNext = () => {
-    return setStep(step + 1);
+    return setQuantity(step + 1);
   };
 
   const handleBack = () => {
-    if (step === 1) {
-      return step;
+    if (quantity === 1) {
+      return quantity;
     } else {
-      setStep(step - 1);
+      setQuantity(quantity - 1);
     }
   };
   const handleLogochange = () => {
     return setFoodInfo(true), setLogo(false), setCheck(true), setPlus(false);
   };
   const handleAddCart = () => {
-    const cartNewItem = { foodName, ingredients, price, src, step, id };
+    const cartNewItem = { foodName, ingredients, price, src, quantity, food };
     const prevCart = localStorage.getItem("fooddata") || "[]";
     const parsedPrevCart = JSON.parse(prevCart);
     console.log(cartNewItem, parsedPrevCart);
@@ -42,6 +42,7 @@ export const OrderSelect = ({
     setPlus(false);
     getData();
   };
+
   return (
     <div className="w-[397px] min-h-[342px] h-fit  border bg-white border-gray-400 rounded-2xl flex flex-col items-center justify-evenly ">
       <div className="w-[365px] h-[210px]  relative">
@@ -102,7 +103,7 @@ export const OrderSelect = ({
                         Total price
                       </div>
                       <div className="h-8  text-[24px] font-semibold flex items-center">
-                        {price * step}
+                        {price * quantity}
                       </div>
                     </div>
                     <div className="w-[121px] h-11 flex justify-between items-center">
@@ -113,7 +114,7 @@ export const OrderSelect = ({
                         -
                       </button>
                       <div className="h-11 w-[30px] flex justify-center items-center">
-                        {step}
+                        {quantity}
                       </div>
                       <button
                         className="w-11 h-11 rounded-4xl  flex items-center justify-center border border-gray-600"

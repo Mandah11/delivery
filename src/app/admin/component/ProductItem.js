@@ -2,12 +2,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { Pens } from "../icon/pen";
 import { Label } from "@/components/ui/label";
 import { PhotoIcon } from "../icon/photo";
 import Image from "next/image";
-import { DeleteIcon } from "../icon/delete";
 import { FoodCard } from "./foodcard";
 
 const options = {
@@ -118,7 +115,7 @@ export const Product = ({
         }),
       });
 
-      getdata();
+      getData();
       getfood();
 
       setAddFoodsType(false);
@@ -261,6 +258,7 @@ export const Product = ({
                             <button className="w-8 h-8 rounded-2xl bg-white flex items-center justify-center">
                               <PhotoIcon />
                             </button>
+
                             <p> Choose a file or drag & drop it here</p>
                           </div>
                         )}
@@ -282,7 +280,7 @@ export const Product = ({
                         src={logoUrl}
                         alt="Uploaded logo"
                         fill
-                        className="object-center rounded-2xl border border-gray-300"
+                        className="object-cover rounded-2xl border border-gray-300"
                       />
                     </div>
                   </div>

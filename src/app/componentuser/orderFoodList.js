@@ -1,21 +1,16 @@
 "use client";
 import {
-  Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { FoodList } from "./foodListInfo";
 import { Textarea } from "@/components/ui/textarea";
 import { FoodLogoCart } from "../admin/icon/adminlogocart";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useUser } from "../featuresuser/userContext";
 import { OrderWhiteIcon } from "../admin/icon/orderwhite";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { userAgent } from "next/server";
+import { useState } from "react";
 export const OrderFood = ({
   addfood,
   setAddFood,
@@ -25,6 +20,8 @@ export const OrderFood = ({
   total,
   id,
 }) => {
+  const [errorAddress, setErrorAddress] = useState("");
+  const value = (valueAddress || "").trim();
   const handleCheck = async () => {
     try {
       const res = await fetch("http://localhost:8000/orders", {
@@ -36,15 +33,21 @@ export const OrderFood = ({
         body: JSON.stringify({
           user: id,
           totalPrice: total,
+          foodOrderItems: addfood,
           deliveryaddress: valueAddress,
         }),
       });
-      console.log("taf");
+
+      if (!value.trim()) {
+        setErrorAddress("address is required");
+      } else {
+        console.log("error");
+      }
     } catch (err) {
       console.log(err);
     }
   };
-  console.log("value", valueAddress);
+  console.log("addfooood", addfood);
 
   return (
     <SheetContent className="bg-[#404040] w-[600px]">
@@ -70,15 +73,15 @@ export const OrderFood = ({
                     </div>
 
                     <div className="w-full h-[89%]  overflow-scroll ">
-                      {addfood.map((data) => {
+                      {addfood.map((data, index) => {
                         return (
                           <FoodList
-                            key={data.id}
+                            key={index}
                             src={data.src}
                             foodName={data.foodName}
                             ingredients={data.ingredients}
-                            step={data.step}
-                            id={data.id}
+                            quantity={data.quantity}
+                            food={data.food}
                             handleRemove={handleRemove}
                             price={data.price}
                             setAddFood={setAddFood}
@@ -92,13 +95,22 @@ export const OrderFood = ({
                     <div className="text-[#71717A] h-11 text-xl flex items-end  font-semibold ">
                       Delivery location
                     </div>
-                    <div className=" h-26  flex flex-col justify-between">
+                    <div className=" h-26 flex flex-col justify-between">
                       <Textarea
                         placeholder="Please share your complete address"
                         value={valueAddress}
                         onChange={valueSetAddress}
-                        className="h-10"
+                        className={
+                          errorAddress
+                            ? " border h-14 rounded-md px-2 border-red-500 text-red-500"
+                            : " border h-14 rounded-md px-2"
+                        }
                       />
+                      {errorAddress && (
+                        <div className="ml-1 h-10 text-[15px] text-red-500">
+                          {errorAddress}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -198,8 +210,14 @@ export const OrderFood = ({
                 </div>
               </div>
             </TabsContent>
-            <TabsContent value="password">
-              Change your password here.
+            <TabsContent value="password" className="w-142">
+              <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
+                <div className="bg-amber-300 w-120 flex justify-around flex-col mt-3">
+                  <div className="text-black  h-10 text-2xl w-full font-semibold ">
+                    Order history
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </SheetDescription>

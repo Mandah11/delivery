@@ -29,7 +29,6 @@ export const FoodCard = ({
   getFoodType,
   getData,
   getfood,
-  // category,
   foodId,
 }) => {
   const [changeFoodstype, setChangeFoodsType] = useState(false);
@@ -76,8 +75,8 @@ export const FoodCard = ({
         }),
       });
       setChangeFoodsType(false);
-      await getData();
-      // getFoodType();
+      // await getData();
+      getFoodType();
     } catch (err) {
       console.log(err);
     }

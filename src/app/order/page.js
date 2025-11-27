@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { FoodLogo } from "../admin/icon/adminfoodlogo";
 import { FoodBlackLogo } from "../admin/icon/adminfoodblacklogo";
@@ -6,8 +7,27 @@ import { StateIcon } from "../admin/icon/statusIcon";
 import { DownIcon } from "../admin/icon/downicon";
 import { LeftIcon } from "../admin/icon/lefticon";
 import { RightIcon } from "../admin/icon/righticon";
-
+import { OrderList } from "./features/orderList";
+import { useEffect, useState } from "react";
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
+  },
+};
 export default function Home() {
+  const [order, setOrder] = useState([]);
+  const getData = async () => {
+    const data = await fetch(`http://localhost:8000/orders`, options);
+    const jsondata = await data.json();
+    setOrder(jsondata);
+    console.log("order", jsondata);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div className="w-full h-full flex">
       <div className="w-full flex justify-between">
@@ -88,66 +108,17 @@ export default function Home() {
                     Delivery state
                   </div>
                 </div>
-                <div className="w-full h-13  flex border border-gray-200">
-                  <div className="w-12 h-full flex justify-center items-center bg-amber-500">
-                    <input type="checkbox"></input>
-                  </div>
-                  <div className="w-14 h-full flex justify-center items-center">
-                    1
-                  </div>
-                  <div className="w-[213px] h-full items-center flex justify-center">
-                    Amgalan
-                  </div>
-                  <div className="w-40 h-full items-center flex  justify-end ">
-                    <div className=" flex justify-between items-center gap-2 w-25 h-8 ">
-                      2 food <DownIcon />
-                    </div>
-                  </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
-                    Date
-                  </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
-                    26.8$
-                  </div>
-                  <div className="w-[213px] h-full items-center flex justify-center">
-                    Sukhbaatar
-                  </div>
-                  <div className="w-40 h-full items-center flex  justify-center">
-                    <button className="border border-red-600 rounded-2xl px-2 flex gap-2 h-8 items-center">
-                      Pending <StateIcon />
-                    </button>
-                  </div>
-                </div>
-                {/* <div className="w-full h-13  flex border-0 border-gray-200">
-                  <div className="w-[4%] h-full bg- flex justify-center items-center ">
-                    <input type="checkbox"></input>
-                  </div>
-                  <div className="w-[5%]  h-full flex justify-center items-center">
-                    №
-                  </div>
-                  <div className="w-[11%]  h-full items-center flex justify-center">
-                    Customer
-                  </div>
-                  <div className="w-[13%]  h-full items-center flex  justify-end ">
-                    <div className=" flex justify-between items-center gap-2 w-25 h-8 ">
-                      2 food <DownIcon />
-                    </div>
-                  </div>
-                  <div className="w-[18%]  h-full items-center flex  justify-center">
-                    Date
-                  </div>
-                  <div className="w-[15%]  h-full items-center flex  justify-center">
-                    Total
-                  </div>
-                  <div className="w-[20%]  h-full items-center flex justify-center">
-                    Delivery Address
-                  </div>
-                  <div className="w-[15%] h-full items-center flex  justify-center">
-                    <button className="border  rounded-2xl px-2 flex gap-2 h-8 items-center">
-                      Pending <StateIcon />
-                    </button>
-                  </div>
-                </div> */}
+                {order.map((order, index) => {
+                  return (
+                    <OrderList
+                      key={index}
+                      user={order.user}
+                      index={index}
+                      totalPrice={order.totalPrice}
+                      deliveryAddress={order.deliveryaddress}
+                    />
+                  );
+                })}
               </div>
             </div>
 

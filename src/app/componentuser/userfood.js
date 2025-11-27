@@ -20,12 +20,12 @@ export const UserFood = ({ foodcategoryname, id, getData }) => {
     );
     const jsondata = await data.json();
     setFoodsTypes(jsondata);
-    console.log("food", jsondata);
   };
 
   useEffect(() => {
     getFoodTypes();
   }, []);
+
   return (
     <div className="w-full  flex flex-col items-center p-10 ">
       <div className="w-[87%] h-20 flex items-start ">
@@ -36,7 +36,7 @@ export const UserFood = ({ foodcategoryname, id, getData }) => {
           return (
             <OrderSelect
               key={foodsinform._id}
-              id={foodsinform._id}
+              food={foodsinform._id}
               src={foodsinform.image}
               foodName={foodsinform.foodName}
               price={foodsinform.price}

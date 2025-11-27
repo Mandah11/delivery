@@ -31,11 +31,7 @@ export default function Home() {
       setStep(step - 1);
     }
   };
-  const handleStart = () => {
-    if (step === 1) {
-      return setStep(step + 2);
-    }
-  };
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
@@ -124,7 +120,6 @@ export default function Home() {
       {step === 1 && (
         <Stepone
           handleNextStep={handleNextStep}
-          handleStart={handleStart}
           valueEmail={email}
           onchangeEmail={(e) => setEmail(e.target.value)}
           handleEmailButtonClick={handleEmailButtonClick}

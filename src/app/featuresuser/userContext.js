@@ -6,34 +6,34 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchUser = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setLoading(false);
       return;
     }
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/users/me", {
+        headers: {
+          Authorization: token,
+        },
+      });
 
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/users/me", {
-          headers: {
-            Authorization: token,
-          },
-        });
+      if (!res.ok) throw new Error("Failed to fetch user");
+      const data = await res.json();
 
-        if (!res.ok) throw new Error("Failed to fetch user");
-        const data = await res.json();
+      setUser(data.user);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setUser(data.users);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+  useEffect(() => {
     fetchUser();
   }, []);
 

@@ -7,19 +7,21 @@ export const FoodList = ({
   src,
   foodName,
   ingredients,
-  id,
-  step,
+  food,
+  quantity,
   price,
   addfood,
   setAddFood,
 }) => {
-  const [Count, setCount] = useState(step);
+  const [Count, setCount] = useState(quantity);
+  console.log(addfood, "adddddfooood");
+
   const handleAddCount = () => {
     setCount((prev) => {
       const newCount = prev + 1;
 
       const changedFoods = addfood.map((item) =>
-        item.id === id ? { ...item, step: newCount } : item
+        item.food === food ? { ...item, quantity: newCount } : item
       );
 
       setAddFood(changedFoods);
@@ -36,9 +38,8 @@ export const FoodList = ({
       setCount((prev) => {
         const lessCount = prev - 1;
         const changedFood = addfood.map((item) =>
-          item.id === id ? { ...item, step: lessCount } : item
+          item.food === food ? { ...item, quantity: lessCount } : item
         );
-
         setAddFood(changedFood);
         localStorage.setItem("fooddata", JSON.stringify(changedFood));
 
@@ -60,7 +61,7 @@ export const FoodList = ({
           </div>
           <button
             className="h-7 w-7 border rounded-full flex justify-center items-center border-red-500 cursor-pointer text-red-500"
-            onClick={() => handleRemove(id)}
+            onClick={() => handleRemove(food)}
           >
             x
           </button>

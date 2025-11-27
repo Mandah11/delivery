@@ -43,8 +43,9 @@ export const UsersFood = () => {
   const [address, setAddress] = useState("");
   const [addloc, setAddLoc] = useState(false);
   const [userclick, setUserClick] = useState(false);
-  const { user, setUser } = useUser();
-  console.log(user?._id, "useruseruser");
+  const { user, setUser, loading } = useUser();
+  console.log("loading", loading);
+  console.log("user", user);
 
   const getFoodDatas = async () => {
     const data = await fetch(`http://localhost:8000/foodCategory`, options);
@@ -91,12 +92,11 @@ export const UsersFood = () => {
       const data = localStorage.getItem("fooddata");
       const jsondata = JSON.parse(data);
       setAddFood(jsondata);
-      console.log(jsondata, "hohohooho");
     }
   };
 
-  const handleRemove = (id) => {
-    const removedFoods = addfood.filter((item) => item.id !== id);
+  const handleRemove = (food) => {
+    const removedFoods = addfood.filter((item) => item.food !== food);
     setAddFood(removedFoods);
 
     localStorage.setItem("fooddata", JSON.stringify(removedFoods));
@@ -117,6 +117,8 @@ export const UsersFood = () => {
     getData();
   }, []);
   const router = useRouter();
+
+  // const tokensee = localStorage.getItem("token");
   const handleSignOut = async () => {
     const tokens = localStorage.getItem("token");
     if (tokens) {
@@ -129,13 +131,14 @@ export const UsersFood = () => {
     }
   };
   const processed = useMemo(() => {
-    return addfood.map((data) => data.price * data.step);
+    return addfood.map((data) => data.price * data.quantity);
   }, [addfood]);
   console.log(processed, "akakakakak");
   const total = useMemo(() => {
     return processed.reduce((sum, num) => sum + num, 0);
   }, [processed]);
   console.log(total, "totalshdee");
+  console.log("{user?.email", user?.email);
 
   return (
     <div className="w-screen h-full flex flex-col items-center ">
@@ -201,11 +204,15 @@ export const UsersFood = () => {
                 </button>
               </div>
               {userclick &&
-                (user?.email ? (
+                (user ? (
                   <div className="w-[188px] h-[104px] bg-white flex flex-col justify-evenly items-center rounded-xl fixed mt-12 right-6 ">
-                    <div className="h-8 w-[156px] justify-center overflow-scroll  flex items-center text-[19px]">
-                      <p className=" w-auto">{user?.email}</p>
-                    </div>
+                    {loading ? (
+                      <div>loading...</div>
+                    ) : (
+                      <div className="h-8 w-[156px] justify-center overflow-scroll  flex items-center text-[19px]">
+                        <p className=" w-auto text-black">{user?.email}</p>
+                      </div>
+                    )}
 
                     <div className="h-9 w-[156px] flex justify-center">
                       <button
@@ -235,6 +242,7 @@ export const UsersFood = () => {
       <div className=" w-full aspect-1440/570 pt-27">
         <img src="./special.png" />
       </div>
+
       <div className="w-full items-center justify-center bg-[#404040] flex flex-col">
         {food.map((food) => {
           return (

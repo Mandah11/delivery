@@ -23,28 +23,27 @@ export const OrderFood = ({
   const [errorAddress, setErrorAddress] = useState("");
   const value = (valueAddress || "").trim();
   const handleCheck = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          user: id,
-          totalPrice: total,
-          foodOrderItems: addfood,
-          deliveryaddress: valueAddress,
-        }),
-      });
-
-      if (!value.trim()) {
-        setErrorAddress("address is required");
-      } else {
-        console.log("error");
+    if (!value.trim()) {
+      setErrorAddress("address is required");
+    } else {
+      try {
+        const res = await fetch("http://localhost:8000/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            user: id,
+            totalPrice: total,
+            foodOrderItems: addfood,
+            deliveryaddress: valueAddress,
+            status: "PENDING",
+          }),
+        });
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
   console.log("addfooood", addfood);
@@ -212,9 +211,27 @@ export const OrderFood = ({
             </TabsContent>
             <TabsContent value="password" className="w-142">
               <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
-                <div className="bg-amber-300 w-120 flex justify-around flex-col mt-3">
+                <div className="bg-amber-300 w-120 flex h-[25%] justify-around flex-col mt-3">
                   <div className="text-black  h-10 text-2xl w-full font-semibold ">
                     Order history
+                  </div>
+                  <div className="w-full h-[90%]  overflow-scroll bg-amber-500 mt-4">
+                    <div className="w-120  border-dashed border-b border-[#09090B80] bg-blue-400 h-[90%] flex gap-5 mb-5 ">
+                      <div className="h-[90%] bg-green-300 w-full">
+                        <div className="flex w-full justify-between bg-amber-200 h-10 items-center">
+                          <div className="h-full bg-purple-300 text-[23px] text-black font-semibold ">
+                            $26.91 (#20156)
+                          </div>
+                          <div className="w-26 h-9 rounded-2xl text-[18px] flex items-center justify-center border border-black text-black font-medium">
+                            Pending
+                          </div>
+                        </div>
+                        <div>
+                          <p>Sunshine Stakers</p>
+                        </div>
+                        <div></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

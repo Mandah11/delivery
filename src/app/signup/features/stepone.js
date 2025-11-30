@@ -4,25 +4,11 @@ import { LeftIcon } from "@/app/admin/icon/lefticon";
 import Link from "next/link";
 import { useState } from "react";
 export const Stepone = ({
-  handleStart,
   valueEmail,
   onchangeEmail,
   handleEmailButtonClick,
   Email,
 }) => {
-  // const [email, setEmail] = useState("");
-  // const [errorstate, setErrorState] = useState("");
-
-  // const handleButtonClick = () => {
-  //   if (email === "") {
-  //     setErrorState("email is required");
-  //   } else if (!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
-  //     setErrorState("example@gmail.com");
-  //   } else {
-  //     handleNextStep();
-  //   }
-  // };
-
   return (
     <div className=" w-screen h-screen  flex justify-end  py-5 ">
       <div className="w-[93%]  h-full flex justify-between items-center">

@@ -43,6 +43,7 @@ export default function Home() {
       setErrorEmail("example@gmail.com");
     } else {
       handleNextStep();
+      setErrorEmail("");
     }
   };
 
@@ -53,6 +54,10 @@ export default function Home() {
   const [errorstate, setErrorState] = useState({});
   const { setUser } = useUser();
   const handleAddChange = async () => {
+    const errors = validateInput();
+    if (errors.length !== 0) {
+      return setErrorState(errors);
+    }
     try {
       const res = await fetch("http://localhost:8000/users", {
         method: "POST",
@@ -65,9 +70,7 @@ export default function Home() {
           password: data.password,
         }),
       });
-      const errors = validateInput();
-      if (Object.keys(errors).length === 0) {
-        setErrorState({});
+      if (errors.length === 0) {
         try {
           const res = await fetch("http://localhost:8000/users/login", {
             method: "POST",
@@ -87,13 +90,13 @@ export default function Home() {
           } else {
             console.log("aronooo");
           }
+          setErrorState({});
+          router.push("/");
         } catch (err) {
           console.log("error copylogin");
         }
+
         router.push("/");
-      } else {
-        setErrorState(errors);
-        console.log("errrooor");
       }
     } catch (err) {
       console.log(err);

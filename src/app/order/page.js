@@ -20,7 +20,7 @@ const options = {
 export default function Home() {
   const [order, setOrder] = useState([]);
   const getData = async () => {
-    const data = await fetch(`http://localhost:8000/orders`, options);
+    const data = await fetch("http://localhost:8000/orders", options);
     const jsondata = await data.json();
     setOrder(jsondata);
     console.log("order", jsondata);
@@ -83,39 +83,41 @@ export default function Home() {
               </div>
               <div className="flex flex-col">
                 <div className="w-full  h-13  flex border border-gray-200">
-                  <div className="w-[4%] h-full bg- flex justify-center items-center bg-amber-200">
+                  <div className="w-[4%] h-full bg- flex justify-center items-center ">
                     <input type="checkbox"></input>
                   </div>
-                  <div className="w-[5%] bg-amber-500 h-full flex justify-center items-center">
+                  <div className="w-[5%] h-full flex justify-center items-center">
                     №
                   </div>
-                  <div className="w-[11%] bg-amber-900 h-full items-center flex justify-center">
-                    Customer
+                  <div className="w-[19%]   h-full items-center flex justify-end">
+                    <div className="w-[95%] ">Customer</div>
                   </div>
-                  <div className="w-[13%] bg-amber-200 h-full items-center flex  justify-center ">
-                    Food
+                  <div className="w-[14%]    h-full items-center flex  justify-end ">
+                    <div className="w-[95%] "> Food</div>
                   </div>
-                  <div className="w-[18%] bg-purple-300 h-full items-center flex  justify-center">
-                    Date
+                  <div className="w-[13%]   h-full items-center flex  justify-end">
+                    <div className="w-[91%] "> Date</div>
                   </div>
-                  <div className="w-[15%] bg-green-400 h-full items-center flex  justify-center">
-                    Total
+                  <div className="w-[11%]  h-full items-center flex  justify-end">
+                    <div className="w-[91%] ">Total </div>
                   </div>
-                  <div className="w-[20%] bg-blue-400 h-full items-center flex justify-center">
-                    Delivery Address
+                  <div className="w-[18%]   h-full items-center flex justify-end">
+                    <div className="w-[95%]  ">Delivery Address</div>
                   </div>
-                  <div className="w-[15%] bg-pink-400 h-full items-center flex  justify-center">
+                  <div className="w-[13%]  h-full items-center flex  justify-center">
                     Delivery state
                   </div>
                 </div>
                 {order.map((order, index) => {
                   return (
                     <OrderList
-                      key={index}
-                      user={order.user}
+                      key={order._id}
+                      user={order?.user}
                       index={index}
                       totalPrice={order.totalPrice}
                       deliveryAddress={order.deliveryaddress}
+                      foodOrderItems={order.foodOrderItems}
+                      createdAt={order.createdAt.slice(0, 10)}
                     />
                   );
                 })}

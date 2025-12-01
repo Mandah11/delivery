@@ -213,7 +213,68 @@ export const OrderFood = ({
               </div>
             </TabsContent>
             <TabsContent value="password" className="w-142">
-              <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
+              <div className="w-135 mt-5 h-180 flex rounded-2xl text-xl items-center flex-col bg-white">
+                <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
+                  <div className="text-black h-10 text-2xl w-115 font-semibold ">
+                    My Order
+                  </div>
+                  <div className="w-full h-[90%] overflow-scroll ">
+                    <div className="w-120 h-55 border-dashed border-b border-[#09090B80] flex flex-col gap-5  ">
+                      <div className=" flex justify-between">
+                        <div className=" w-full flex justify-around">
+                          <p className=" h-8 w-240 font-bold text-base text-black">
+                            $12.99
+                          </p>
+                          <div className="w-240 flex justify-end">
+                            <button className="border border-[#EF4444] w-16 h-8 cursor-pointer rounded-full">
+                              <p className="text-[#09090B] text-xs font-semibold">
+                                Pending
+                              </p>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full flex justify-around">
+                        <div className="flex w-140 gap-3">
+                          {/* <FoodIcon /> */}
+                          <p className="text-sm">Sunshine Stackers </p>
+                        </div>
+                        <div className="w-140 flex justify-end">
+                          <p className="text-sm">x1</p>
+                        </div>
+                      </div>
+                      <div className="w-full flex justify-around items-center">
+                        <div className="flex w-140 gap-3">
+                          {/* <FoodIcon /> */}
+                          <p className="text-sm">Sunshine Stackers </p>
+                        </div>
+                        <div className="w-140 flex justify-end">
+                          <p className="text-sm">x1</p>
+                        </div>
+                      </div>
+                      <div className="gap-3 flex text-sm items-center">
+                        {/* <TimeIcon /> */}
+                        <p>2024/12/20</p>
+                      </div>
+                      <div className="flex gap-3 text-sm items-center">
+                        {/* <MapIcon /> */}
+                        <p>Mongolia, Ub exx</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white w-135 h-70 rounded-2xl mt-10 flex justify-center">
+                <div className="w-115">
+                  <p className="text-[#71717A] h-10 text-xl">Payment info</p>
+                  <div className="w-full border border-dashed border-[#09090B80]"></div>
+                  <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
+                    <p className="text-white font-medium">Checkout</p>
+                  </button>
+                </div>
+              </div>
+              {/* <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
                 <div className=" w-120 flex h-[25%] justify-around flex-col mt-4.5 ">
                   <div className="text-black  h-10 text-[23px] w-full font-semibold ">
                     Order history
@@ -249,7 +310,7 @@ export const OrderFood = ({
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </TabsContent>
           </Tabs>
         </SheetDescription>

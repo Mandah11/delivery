@@ -16,11 +16,15 @@ export const UserProvider = ({ children }) => {
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/users/me", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/users/me`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to fetch user");
       const data = await res.json();

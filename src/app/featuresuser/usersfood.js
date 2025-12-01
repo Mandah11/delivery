@@ -48,7 +48,10 @@ export const UsersFood = () => {
   console.log("user", user);
 
   const getFoodDatas = async () => {
-    const data = await fetch(`http://localhost:8000/foodCategory`, options);
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/foodCategory`,
+      options
+    );
     const jsondata = await data.json();
     setFood(jsondata);
     console.log("food", jsondata);
@@ -69,16 +72,19 @@ export const UsersFood = () => {
     if (user) {
       try {
         const { token } = await res.json();
-        const res = await fetch("http://localhost:8000/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          headers: JSON.stringify({
-            Authorization: token,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/users`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+            headers: JSON.stringify({
+              Authorization: token,
+            }),
+          }
+        );
       } catch (err) {
         console.log(err);
       }

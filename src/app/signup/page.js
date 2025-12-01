@@ -55,11 +55,13 @@ export default function Home() {
   const { setUser } = useUser();
   const handleAddChange = async () => {
     const errors = validateInput();
-    if (errors.length !== 0) {
+    if (Object.keys(errors).length !== 0) {
       return setErrorState(errors);
+    } else {
+      setErrorState({});
     }
     try {
-      const res = await fetch("http://localhost:8000/users", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,9 +72,13 @@ export default function Home() {
           password: data.password,
         }),
       });
-      if (errors.length === 0) {
-        try {
-          const res = await fetch("http://localhost:8000/users/login", {
+      if (!res.ok) {
+        console.log("aldaa");
+      }
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/users/login`,
+          {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -82,22 +88,22 @@ export default function Home() {
               email: email,
               password: data.password,
             }),
-          });
-          const { token, user } = await res.json();
-          if (token) {
-            localStorage.setItem("token", token);
-            setUser(user);
-          } else {
-            console.log("aronooo");
           }
-          setErrorState({});
-          router.push("/");
-        } catch (err) {
-          console.log("error copylogin");
+        );
+        const { token, user } = await res.json();
+        if (token) {
+          localStorage.setItem("token", token);
+          setUser(user);
+        } else {
+          console.log("aronooo");
         }
-
+        setErrorState({});
         router.push("/");
+      } catch (err) {
+        console.log("error copylogin");
       }
+
+      router.push("/");
     } catch (err) {
       console.log(err);
     }

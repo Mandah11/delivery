@@ -23,16 +23,19 @@ export const FoodMenus = () => {
   const [addCategory, setAddCategory] = useState(false);
   const handleAddCategoryChange = async () => {
     try {
-      const res = await fetch("http://localhost:8000/foodCategory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          categoryName: addfoodcategory,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/foodCategory`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            categoryName: addfoodcategory,
+          }),
+        }
+      );
       await getData();
       await getFood();
       setAddFoodCategory("");
@@ -45,13 +48,19 @@ export const FoodMenus = () => {
     }
   };
   const getData = async () => {
-    const data = await fetch(`http://localhost:8000/foodCategory`, options);
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/foodCategory`,
+      options
+    );
     const jsondata = await data.json();
     setFoodMenu(jsondata);
     console.log("category", jsondata);
   };
   const getFood = async () => {
-    const data = await fetch(`http://localhost:8000/food`, options);
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/food`,
+      options
+    );
     const jsondata = await data.json();
     setFoods(jsondata);
     console.log("food", jsondata);

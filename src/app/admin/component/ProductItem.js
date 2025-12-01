@@ -77,7 +77,7 @@ export const Product = ({
   const getFoodType = async () => {
     console.log("called");
     const data = await fetch(
-      `http://localhost:8000/food/findId/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/food/findId/${id}`,
       options
     );
     const jsondata = await data.json();
@@ -100,7 +100,7 @@ export const Product = ({
 
   const handleAddChange = async () => {
     try {
-      const res = await fetch("http://localhost:8000/food", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/food`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

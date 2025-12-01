@@ -13,17 +13,20 @@ export const Login = ({ handleEnd }) => {
   const { setUser } = useUser();
   const handleInputChange = async () => {
     try {
-      const res = await fetch("http://localhost:8000/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
       const { token, user } = await res.json();
       if (token) {
         localStorage.setItem("token", token);

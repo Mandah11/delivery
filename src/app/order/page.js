@@ -20,7 +20,10 @@ const options = {
 export default function Home() {
   const [order, setOrder] = useState([]);
   const getData = async () => {
-    const data = await fetch("http://localhost:8000/orders", options);
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/orders`,
+      options
+    );
     const jsondata = await data.json();
     setOrder(jsondata);
     console.log("order", jsondata);

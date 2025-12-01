@@ -27,20 +27,23 @@ export const OrderFood = ({
       setErrorAddress("address is required");
     } else {
       try {
-        const res = await fetch("http://localhost:8000/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            user: id,
-            totalPrice: total,
-            foodOrderItems: addfood,
-            deliveryaddress: valueAddress,
-            status: "PENDING",
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/orders`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              user: id,
+              totalPrice: total,
+              foodOrderItems: addfood,
+              deliveryaddress: valueAddress,
+              status: "PENDING",
+            }),
+          }
+        );
       } catch (err) {
         console.log(err);
       }
@@ -66,8 +69,8 @@ export const OrderFood = ({
             <TabsContent value="account" className=" w-142">
               {(!addfood.length == 0 && (
                 <div className="w-135 mt-5 h-175 flex rounded-2xl text-xl items-center flex-col justify-around bg-white">
-                  <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
-                    <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold ">
+                  <div className=" h-[75%] w-120 flex justify-around flex-col mt-3 ">
+                    <div className="text-[#71717A] h-10 text-2xl w-115 font-semibold">
                       My cart
                     </div>
 
@@ -211,25 +214,37 @@ export const OrderFood = ({
             </TabsContent>
             <TabsContent value="password" className="w-142">
               <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
-                <div className="bg-amber-300 w-120 flex h-[25%] justify-around flex-col mt-3">
-                  <div className="text-black  h-10 text-2xl w-full font-semibold ">
+                <div className=" w-120 flex h-[25%] justify-around flex-col mt-4.5 ">
+                  <div className="text-black  h-10 text-[23px] w-full font-semibold ">
                     Order history
                   </div>
-                  <div className="w-full h-[90%]  overflow-scroll bg-amber-500 mt-4">
-                    <div className="w-120  border-dashed border-b border-[#09090B80] bg-blue-400 h-[90%] flex gap-5 mb-5 ">
-                      <div className="h-[90%] bg-green-300 w-full">
-                        <div className="flex w-full justify-between bg-amber-200 h-10 items-center">
-                          <div className="h-full bg-purple-300 text-[23px] text-black font-semibold ">
+                  <div className="w-full h-[90%]  overflow-scroll">
+                    <div className="w-120  border-dashed border-b border-[#09090B80]  h-[90%] flex gap-5 mb-5 flex-col items-center">
+                      <div className="h-[90%]  w-[94%] mt-3 bg-amber-600">
+                        <div className="flex w-full justify-between  h-[15%] items-center">
+                          <div className="h-full text-[19px] text-black font-semibold ">
                             $26.91 (#20156)
                           </div>
-                          <div className="w-26 h-9 rounded-2xl text-[18px] flex items-center justify-center border border-black text-black font-medium">
+                          <div className="w-auto px-2 h-full rounded-2xl text-[17px] flex items-center justify-center border border-black text-black font-medium">
                             Pending
                           </div>
                         </div>
-                        <div>
-                          <p>Sunshine Stakers</p>
+                        <div className="w-full h-[40%] overflow-scroll flex flex-col justify-around text-[15px] bg-amber-100">
+                          <div className="flex w-full bg-green-300 justify-between h-7 items-center">
+                            <p className="text-[15px]">Sunshine Stakers</p>
+                            <div>x1</div>
+                          </div>
+                          <div className="flex w-full bg-amber-300 justify-between h-7 items-center">
+                            <p className="text-[15px]">Sunshine Stakers</p>
+                            <div>x1</div>
+                          </div>
                         </div>
-                        <div></div>
+                        <div className="w-full min-h-7 overflow-scroll bg-purple-300 text-[15px]">
+                          hfgfsadgjdsg
+                        </div>
+                        <div className="w-full min-h-7 overflow-scroll bg-purple-500 text-[15px]">
+                          fhgejkhj
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -42,7 +42,7 @@ export const FoodCard = ({
 
   const handleDelete = async () => {
     try {
-      const res = await fetch("http://localhost:8000/food", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/food`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export const FoodCard = ({
   };
   const handleUpdate = async () => {
     try {
-      const res = await fetch("http://localhost:8000/food", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/food`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

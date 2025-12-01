@@ -15,7 +15,7 @@ export const UserFood = ({ foodcategoryname, id, getData }) => {
 
   const getFoodTypes = async () => {
     const data = await fetch(
-      `http://localhost:8000/food/findId/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/food/findId/${id}`,
       options
     );
     const jsondata = await data.json();

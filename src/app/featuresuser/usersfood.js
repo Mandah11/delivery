@@ -95,8 +95,11 @@ export const UsersFood = () => {
 
   const getData = async () => {
     if (typeof window !== "undefined") {
-      const data = localStorage.getItem("fooddata");
+      const data = localStorage.getItem("fooddata") || "[]";
+
       const jsondata = JSON.parse(data);
+      console.log(jsondata, "jsoooon");
+
       setAddFood(jsondata);
     }
   };
@@ -136,8 +139,10 @@ export const UsersFood = () => {
       console.log("error");
     }
   };
+  console.log(addfood, "adddddddd");
+
   const processed = useMemo(() => {
-    return addfood.map((data) => data.price * data.quantity);
+    return addfood?.map((data) => data.price * data.quantity);
   }, [addfood]);
   console.log(processed, "akakakakak");
   const total = useMemo(() => {

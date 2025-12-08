@@ -149,7 +149,7 @@ export const Product = ({
               >
                 +
               </button>
-              <div className="flex justify-center items-center flex-col">
+              <div className="flex justify-center items-center flex-col text-white">
                 <p>Add new Dish to</p>
                 <p>{FoodcategoryName}</p>
               </div>

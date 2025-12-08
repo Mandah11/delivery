@@ -20,8 +20,12 @@ export const FoodMenus = () => {
   const [foods, setFoods] = useState([]);
   const [addfoodcategory, setAddFoodCategory] = useState("");
   const [successmes, setSuccessMes] = useState("");
+  const [errorAddCategory, setErrorAddCategory] = useState("");
   const [addCategory, setAddCategory] = useState(false);
   const handleAddCategoryChange = async () => {
+    if (!addfoodcategory.trim()) {
+      return setErrorAddCategory("Category name is required!!");
+    }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/foodCategory`,
@@ -170,7 +174,7 @@ export const FoodMenus = () => {
                 x
               </button>
             </div>
-            <div className="w-[412px] h-18 justify-between  flex flex-col">
+            <div className="w-[412px] h-18 justify-between flex flex-col">
               <p className="h-7 ml-1 text-[17px] font-medium">Categoryname</p>
               <input
                 className="h-[35px] w-full rounded-md border px-2"
@@ -181,6 +185,7 @@ export const FoodMenus = () => {
                 }}
               />
             </div>
+            {errorAddCategory && <div>{errorAddCategory}</div>}
             <div className="w-[412px] h-16  flex justify-end items-end">
               <button
                 className="h-10 w-[123px] bg-black text-white  rounded-md"

@@ -16,7 +16,7 @@ export const OrderSelect = ({
   const [check, setCheck] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const handleNext = () => {
-    return setQuantity(step + 1);
+    return setQuantity(quantity + 1);
   };
 
   const handleBack = () => {

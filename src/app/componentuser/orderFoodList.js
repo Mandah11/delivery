@@ -11,6 +11,7 @@ import { FoodLogoCart } from "../admin/icon/adminlogocart";
 import { OrderWhiteIcon } from "../admin/icon/orderwhite";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 export const OrderFood = ({
   addfood,
   setAddFood,
@@ -19,12 +20,16 @@ export const OrderFood = ({
   valueSetAddress,
   total,
   id,
+  tokenhere,
 }) => {
+  const router = useRouter();
   const [errorAddress, setErrorAddress] = useState("");
   const value = (valueAddress || "").trim();
   const handleCheck = async () => {
     if (!value.trim()) {
       setErrorAddress("address is required");
+    } else if (!tokenhere) {
+      router.push("/login");
     } else {
       try {
         const res = await fetch(
@@ -213,76 +218,18 @@ export const OrderFood = ({
               </div>
             </TabsContent>
             <TabsContent value="password" className="w-142">
-              <div className="w-135 mt-5 h-180 flex rounded-2xl text-xl items-center flex-col bg-white">
-                <div className=" h-[75%] w-120 flex justify-around flex-col mt-3">
-                  <div className="text-black h-10 text-2xl w-115 font-semibold ">
-                    My Order
-                  </div>
-                  <div className="w-full h-[90%] overflow-scroll ">
-                    <div className="w-120 h-55 border-dashed border-b border-[#09090B80] flex flex-col gap-5  ">
-                      <div className=" flex justify-between">
-                        <div className=" w-full flex justify-around">
-                          <p className=" h-8 w-240 font-bold text-base text-black">
-                            $12.99
-                          </p>
-                          <div className="w-240 flex justify-end">
-                            <button className="border border-[#EF4444] w-16 h-8 cursor-pointer rounded-full">
-                              <p className="text-[#09090B] text-xs font-semibold">
-                                Pending
-                              </p>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="w-full flex justify-around">
-                        <div className="flex w-140 gap-3">
-                          {/* <FoodIcon /> */}
-                          <p className="text-sm">Sunshine Stackers </p>
-                        </div>
-                        <div className="w-140 flex justify-end">
-                          <p className="text-sm">x1</p>
-                        </div>
-                      </div>
-                      <div className="w-full flex justify-around items-center">
-                        <div className="flex w-140 gap-3">
-                          {/* <FoodIcon /> */}
-                          <p className="text-sm">Sunshine Stackers </p>
-                        </div>
-                        <div className="w-140 flex justify-end">
-                          <p className="text-sm">x1</p>
-                        </div>
-                      </div>
-                      <div className="gap-3 flex text-sm items-center">
-                        {/* <TimeIcon /> */}
-                        <p>2024/12/20</p>
-                      </div>
-                      <div className="flex gap-3 text-sm items-center">
-                        {/* <MapIcon /> */}
-                        <p>Mongolia, Ub exx</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white w-135 h-70 rounded-2xl mt-10 flex justify-center">
-                <div className="w-115">
-                  <p className="text-[#71717A] h-10 text-xl">Payment info</p>
-                  <div className="w-full border border-dashed border-[#09090B80]"></div>
-                  <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
-                    <p className="text-white font-medium">Checkout</p>
-                  </button>
-                </div>
-              </div>
-              {/* <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center flex-col bg-white">
-                <div className=" w-120 flex h-[25%] justify-around flex-col mt-4.5 ">
+              <div className="w-135 mt-5 h-250 flex rounded-2xl text-xl items-center bg-white flex-col ">
+                <div className=" w-120 flex h-10 justify-around  flex-col mt-4.5">
                   <div className="text-black  h-10 text-[23px] w-full font-semibold ">
                     Order history
                   </div>
-                  <div className="w-full h-[90%]  overflow-scroll">
-                    <div className="w-120  border-dashed border-b border-[#09090B80]  h-[90%] flex gap-5 mb-5 flex-col items-center">
-                      <div className="h-[90%]  w-[94%] mt-3 bg-amber-600">
-                        <div className="flex w-full justify-between  h-[15%] items-center">
+                </div>
+
+                <div className="h-full">
+                  <div className="w-full h-[92%]  overflow-scroll">
+                    <div className="w-120 h-48 justify-center  flex gap-5 flex-col items-center">
+                      <div className="h-42 w-[94%]">
+                        <div className="flex w-full justify-between  h-8 bg-white items-center">
                           <div className="h-full text-[19px] text-black font-semibold ">
                             $26.91 (#20156)
                           </div>
@@ -290,27 +237,32 @@ export const OrderFood = ({
                             Pending
                           </div>
                         </div>
-                        <div className="w-full h-[40%] overflow-scroll flex flex-col justify-around text-[15px] bg-amber-100">
-                          <div className="flex w-full bg-green-300 justify-between h-7 items-center">
+                        <div className="w-full h-14 flex flex-col mt-2 overflow-scroll text-[15px] ">
+                          <div className="flex w-full  justify-between h-7 items-center">
                             <p className="text-[15px]">Sunshine Stakers</p>
-                            <div>x1</div>
+                            <div className="h-7 flex items-center">x1</div>
                           </div>
-                          <div className="flex w-full bg-amber-300 justify-between h-7 items-center">
+                          <div className="flex w-full  justify-between h-7 items-center">
                             <p className="text-[15px]">Sunshine Stakers</p>
-                            <div>x1</div>
+                            <div className="h-7 flex items-center">x1</div>
+                          </div>
+                          <div className="flex w-full  justify-between h-7 items-center">
+                            <p className="text-[15px]">Sunshine Stakers</p>
+                            <div className="h-7 flex items-center">x1</div>
                           </div>
                         </div>
-                        <div className="w-full min-h-7 overflow-scroll bg-purple-300 text-[15px]">
+                        <div className="w-full h-7  flex items-center overflow-scroll  text-[15px]">
                           hfgfsadgjdsg
                         </div>
-                        <div className="w-full min-h-7 overflow-scroll bg-purple-500 text-[15px]">
+                        <div className="w-full h-7 overflow-scroll  flex items-center text-[15px]">
                           fhgejkhj
                         </div>
+                        <div className="border-dashed border-b border-[#09090B80] mt-3 w-full"></div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </TabsContent>
           </Tabs>
         </SheetDescription>

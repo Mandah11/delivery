@@ -26,32 +26,35 @@ export const OrderList = ({
   };
   return (
     <>
-      <div className="w-full  h-13  flex border-x border-b border-gray-200">
-        <div className="w-[4%] h-full bg- flex justify-center items-center ">
-          <input type="checkbox"></input>
-        </div>
-        <div className="w-[5%]  h-full flex justify-center items-center">
-          {indexs}
-        </div>
-        <div className="w-[19%]  h-full items-center flex justify-end">
-          <div className="w-[95%] "> {user.email}</div>
-        </div>
-        <div className="w-[14%]   h-full items-center flex  justify-end  ">
-          <div className="w-[95%]">
-            <div className="flex items-center justify-between w-[75%] gap-2 h-full">
-              <div className="flex gap-1">
-                <div> {foodOrderItems.length}</div>
-                <div>foods</div>
-              </div>
+      {indexs < 18 && (
+        <div className="w-full  h-13  flex border-x border-b border-gray-200">
+          <div className="w-[4%] h-full bg- flex justify-center items-center ">
+            <input type="checkbox"></input>
+          </div>
+          <div className="w-[5%]  h-full flex justify-center items-center">
+            {indexs}
+          </div>
+          <div className="w-[19%]  h-full items-center flex justify-end">
+            <div className="w-[95%] "> {user?.email}</div>
+          </div>
+          <div className="w-[14%]   h-full items-center flex  justify-end  ">
+            <div className="w-[95%]">
+              <div className="flex items-center justify-between w-[75%] gap-2 h-full">
+                <div className="flex gap-1">
+                  <div> {foodOrderItems.length}</div>
+                  <div>foods</div>
+                </div>
 
-              <div onClick={handleOpen}>
-                <DownIcon />
+                <div onClick={handleOpen}>
+                  <DownIcon />
+                </div>
               </div>
-            </div>
-            {open && (
-              <div className="fixed mt-6 w-20 h-10 bg-blue-500">dsgjdgfdj</div>
-            )}
-            {/* <Select>
+              {open && (
+                <div className="fixed mt-6 w-20 h-10 bg-blue-500">
+                  dsgjdgfdj
+                </div>
+              )}
+              {/* <Select>
               <SelectTrigger className="w-[80%] border-0">
                 <div className="flex items-center justify-center gap-2 text-[15px]">
                   <div> {foodOrderItems.length} foods</div>
@@ -67,33 +70,34 @@ export const OrderList = ({
                 })}
               </SelectContent>
             </Select> */}
+            </div>
+          </div>
+          <div className="w-[13%]   h-full items-center flex  justify-end">
+            <div className="w-[91%] "> {createdAt}</div>
+          </div>
+          <div className="w-[11%]  h-full items-center flex  justify-end">
+            <div className="w-[91%] ">{totalPrice}</div>
+          </div>
+          <div className="w-[18%] h-full items-center flex justify-end">
+            <div className="w-[95%]  "> {deliveryAddress}</div>
+          </div>
+          <div className="w-[13%]  h-full items-center flex  justify-center">
+            <Select>
+              {" "}
+              <SelectTrigger className="w-[49%] ml-1.5 rounded-3xl justify-around flex">
+                <SelectValue placeholder="PENDING" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="DELIVERY">DELIVERY</SelectItem>
+                  <SelectItem value="PENDING">PENDING</SelectItem>
+                  <SelectItem value="CANCELED">CANCELED</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
-        <div className="w-[13%]   h-full items-center flex  justify-end">
-          <div className="w-[91%] "> {createdAt}</div>
-        </div>
-        <div className="w-[11%]  h-full items-center flex  justify-end">
-          <div className="w-[91%] ">{totalPrice}</div>
-        </div>
-        <div className="w-[18%] h-full items-center flex justify-end">
-          <div className="w-[95%]  "> {deliveryAddress}</div>
-        </div>
-        <div className="w-[13%]  h-full items-center flex  justify-center">
-          <Select>
-            {" "}
-            <SelectTrigger className="w-[49%] ml-1.5 rounded-3xl justify-around flex">
-              <SelectValue placeholder="PENDING" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="DELIVERY">DELIVERY</SelectItem>
-                <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="CANCELED">CANCELED</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      )}
     </>
   );
 };

@@ -127,7 +127,7 @@ export const UsersFood = () => {
   }, []);
   const router = useRouter();
 
-  // const tokensee = localStorage.getItem("token");
+  const tokenhere = localStorage.getItem("token");
   const handleSignOut = async () => {
     const tokens = localStorage.getItem("token");
     if (tokens) {
@@ -197,6 +197,7 @@ export const UsersFood = () => {
                 </SheetTrigger>
                 <OrderFood
                   addfood={addfood}
+                  tokenhere={tokenhere}
                   setAddFood={setAddFood}
                   handleRemove={handleRemove}
                   valueAddress={address}

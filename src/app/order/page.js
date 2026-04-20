@@ -117,7 +117,7 @@ export default function Home() {
                     <OrderList
                       key={order._id}
                       user={order?.user}
-                      index={index}
+                      index={index + 1}
                       totalPrice={order.totalPrice}
                       deliveryAddress={order.deliveryaddress}
                       foodOrderItems={order.foodOrderItems}
